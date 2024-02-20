@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { localStorageService } from './localStorage.service';
 import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
 // import { consoleLogService } from './consoleLog.service';
 @Injectable({
     providedIn: 'root',
 })
 export class authService {
+    constructor(private router: Router) {}
     loadJwt(token: string): boolean {
         const parsedToken = this.parseJwt(token);
         if (parsedToken.application[0] == '{') {
@@ -46,7 +48,7 @@ export class authService {
         localStorageService.del('jt_pl');
         localStorageService.del('jt');
         localStorageService.del('iL');
-        // window.open(environment.authUrl, '_self');
+        this.router.navigate(['/']);
     }
 
     parseJwt(token: string) {
