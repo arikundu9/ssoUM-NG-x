@@ -1,3 +1,4 @@
+import { CommonService } from '@S/index';
 import { statusBarService } from '@S/statusBar.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -10,7 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class HomeComponent implements OnInit {
 
-    constructor(private fb: FormBuilder, public statusBar: statusBarService) { }
+    constructor(private commonService: CommonService, private fb: FormBuilder, public statusBar: statusBarService) { }
 
 
     ngOnInit(): void {

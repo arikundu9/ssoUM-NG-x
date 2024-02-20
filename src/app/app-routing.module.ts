@@ -20,7 +20,7 @@ const routes: Routes = [
         path: '',
         component: DashboardComponent,
         // runGuardsAndResolvers: 'always',
-        canActivate: [AuthGuard],
+        // canActivate: [AuthGuard],
         // canActivateChild: [AuthGuard],
         children: [
             { path: 'home', data: {}, component: HomeComponent },
