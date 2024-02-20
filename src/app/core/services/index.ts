@@ -5,4 +5,3 @@ export * from './alertify.service';
 export * from './auth.service';
 export * from './consoleLog.service';
 export * from './crypto.service';
-export * from './data.service';

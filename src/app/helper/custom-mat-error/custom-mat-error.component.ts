@@ -1,4 +1,3 @@
-import { ValidationService } from '@S/validation.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 
@@ -7,16 +6,16 @@ import { AbstractControl } from '@angular/forms';
     templateUrl: './custom-mat-error.component.html',
     styleUrls: ['./custom-mat-error.component.scss'],
 })
-export class CustomMatErrorComponent{
+export class CustomMatErrorComponent {
 
     @Input() control!: AbstractControl;
 
-    constructor(private validationService: ValidationService) {}
+    constructor() { }
 
     get errorMessage(): any {
         for (const propertyName in this.control.errors) {
             if (this.control.errors.hasOwnProperty(propertyName)) {
-                return this.validationService.getValidatorErrorMessage(propertyName, this.control.errors[propertyName]);
+                // return this.validationService.getValidatorErrorMessage(propertyName, this.control.errors[propertyName]);
             }
         }
         return null;

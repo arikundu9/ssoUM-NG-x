@@ -1,5 +1,4 @@
 import { CommonService } from '@S/common.service';
-import { dataService } from '@S/data.service';
 import { NotificationService } from '@S/notification.service';
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
@@ -16,7 +15,7 @@ export class BaseComponent implements OnInit {
 
     });
     accordionStep: number = 0;
-    constructor(public router: Router, public commonService: CommonService, public fb: FormBuilder, public notify: NotificationService, public datePipe: DatePipe, public DataService: dataService) {}
+    constructor(public router: Router, public commonService: CommonService, public fb: FormBuilder, public notify: NotificationService, public datePipe: DatePipe) {}
 
     ngOnInit() {}
 

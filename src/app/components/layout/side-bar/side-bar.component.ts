@@ -9,13 +9,10 @@ import { Router } from '@angular/router';
 })
 export class SideBarComponent implements OnInit {
     authorityCode!: string;
-    userLevel: number;
     constructor(private router: Router, private renderer: Renderer2, private el: ElementRef, private authService: authService) {
-        this.userLevel = +this.authService.user.Levels[0].Scope[0].substring(2, 4);
     }
 
     ngOnInit(): void {
-        this.authorityCode = this.authService.user.Levels[0].Scope[0];
     }
 
     goToEntry(e: Event) {
