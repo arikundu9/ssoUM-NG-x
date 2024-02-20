@@ -1,0 +1,192 @@
+<div class="mainRoute">
+    <div class="container-fluid">
+        <secondBar>Sanction Draft Management</secondBar>
+        <mat-accordion [hideToggle]="false">
+            <mat-expansion-panel [hideToggle]="false" [expanded]="accordionStep === 0" (opened)="setAccordionStep(0)" class="formDesign mt-3" [formGroup]="draftModifyForm">
+                <mat-expansion-panel-header>
+                    <mat-panel-title><strong>Search Criteria</strong></mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="row p-3">
+                    <p>
+                        <strong><span class="ctm-black_bold_clr">Allotment :</span></strong>
+                    </p>
+                    <mat-radio-group aria-label="Select an option" formControlName="allotmentType">
+                        <mat-radio-button value="1" [checked]="true" (change)="isSanctionedClicked = false">Allotment &nbsp;</mat-radio-button>
+                        <mat-radio-button (change)="isSanctionedClicked = false">Grant-in-Aid &nbsp; </mat-radio-button>
+                        <mat-radio-button (change)="isSanctionedClicked = true">Sanction &nbsp; </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+                <div class="row p-3">
+                    <div class="col-4">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <input matInput type="text" placeholder="Memo Number" formControlName="memoNo" [matAutocomplete]="memoNo" />
+                            <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                            <mat-label>Memo Number *</mat-label>
+                            <mat-autocomplete #memoNo="matAutocomplete">
+                                <mat-option *ngFor="let memo of memoList" (onSelectionChange)="isMemoNoSelected = true; bindData($event, memo)" [value]="memo">
+                                    {{ memo }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error><custom-mat-error [control]="draftModifyFormErrorControl.memoNo"></custom-mat-error></mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-4">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Memo From Date</mat-label>
+                            <input formControlName="dateFrom" matInput [matDatepicker]="picker1" placeholder="Memo From Date(/DD/MM/YYYY)" />
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-4">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Memo To Date</mat-label>
+                            <input formControlName="dateTo" matInput [matDatepicker]="picker2" placeholder="Memo To Date(DD/MM/YYYY)" />
+                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <mat-action-row>
+                    <button mat-raised-button color="primary" (click)="viewReport()">View Report</button>
+                    <button mat-raised-button color="primary" (click)="onSearch()">Search</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [expanded]="accordionStep === 1" (opened)="setAccordionStep(1)" class="formDesign">
+                <mat-expansion-panel-header>
+                    <mat-panel-title><strong>Memo Generation</strong></mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="row mt-2" *ngIf="isMemoNoSelected">
+                    <div class="col-12">
+                        <form [formGroup]="memoForm">
+                            <div class="row">
+                                <div class="col-2"></div>
+
+                                <div class="col-8">
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <input matInput type="text" placeholder="" formControlName="memoNo" />
+                                        <mat-label>Memo Number *</mat-label>
+                                        <mat-error><custom-mat-error [control]="memoFormErrorControl.memoNo"></custom-mat-error></mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="full-width mt-3">
+                                        <mat-label>Memo Date</mat-label>
+                                        <input formControlName="date" matInput [matDatepicker]="picker3" readonly/>
+                                        <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker3></mat-datepicker>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="full-width" *ngIf="isSanctionedClicked">
+                                        <input matInput type="text" placeholder="" formControlName="nameOfProject" />
+                                        <mat-label>Name Of Scheme/Project</mat-label>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="full-width" *ngIf="isSanctionedClicked">
+                                        <input matInput type="text" placeholder="" formControlName="puprposeOfSanction" />
+                                        <mat-label>Purpose of Sanction</mat-label>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="full-width" *ngIf="isSanctionedClicked">
+                                        <input matInput type="text" placeholder="" formControlName="administrativeOrderNo" />
+                                        <mat-label>Administrative Order Number</mat-label>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="full-width" *ngIf="isSanctionedClicked">
+                                        <mat-label>Administrative Order Date</mat-label>
+                                        <input formControlName="administrativeOrderDate" matInput [matDatepicker]="picker4" [(ngModel)]="today" />
+                                        <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker4></mat-datepicker>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="full-width" *ngIf="isSanctionedClicked">
+                                        <input matInput type="number" placeholder="" formControlName="adminApprovalAmt" />
+                                        <mat-label>Admin Approval Amount</mat-label>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="full-width" *ngIf="isSanctionedClicked">
+                                        <input matInput type="text" placeholder="" formControlName="authority" />
+                                        <mat-label>Authority</mat-label>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="full-width" *ngIf="isSanctionedClicked">
+                                        <input matInput type="number" placeholder="" formControlName="totalFundSanction" />
+                                        <mat-label>Total Fund Sanctioned Till Date</mat-label>
+                                    </mat-form-field>
+
+                                    <div class="d-flex mb-3" *ngIf="isSanctionedClicked">
+                                        <span>UC Required : &nbsp;</span>
+                                        <mat-radio-group aria-label="Select an option" formControlName="ucType">
+                                            <mat-radio-button value="yes">Yes &nbsp;</mat-radio-button>
+                                            <mat-radio-button value="no" [checked]="true">No &nbsp; </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+
+                                    <mat-form-field appearance="outline" class="full-width" *ngIf="isSanctionedClicked">
+                                        <input matInput type="text" placeholder="" formControlName="fdGroup" />
+                                        <mat-label>FD Group</mat-label>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <textarea matInput type="text" placeholder="" formControlName="remarks" class="box"></textarea>
+                                        <mat-label>Remarks</mat-label>
+                                    </mat-form-field>
+
+                                    <p>(Maximum characters: 500)</p>
+
+                                    <p class="text-danger" *ngIf="memoForm.controls['remarks'].hasError('maxlength')">Remarks cannot exceed 500 characters.</p>
+                                </div>
+
+                                <div class="col-2"></div>
+                            </div>
+
+                            <div class="row mx-0">
+                                <div class="col-2"></div>
+                                <div class="col-8">
+                                    <strong>Copy Forwarded To :</strong>
+                                    <br /><br />
+                                    <button type="button" mat-raised-button color="primary" (click)="addcopyForward()" class="mb-4">Add</button>
+                                    <div class="row">
+                                        <ng-container [formGroup]="memoForm">
+                                            <ng-container formArrayName="copyForward">
+                                                <ng-container *ngFor="let copyFwrdFormStruct of copyForwardArray.controls; let i = index">
+                                                    <ng-container [formGroupName]="i">
+                                                        <div class="col-11">
+                                                            <ng-container style="text-align: center">
+                                                                <mat-form-field class="full-width" appearance="outline">
+                                                                    <input matInput type="text" formControlName="cf" required />
+                                                                </mat-form-field>
+                                                            </ng-container>
+                                                        </div>
+
+                                                        <div class="col-1">
+                                                            <ng-container style="text-align: center">
+                                                                <button class="mt-1" mat-mini-fab color="primary" (click)="deletecopyForwardController(i)"><mat-icon>clear</mat-icon></button>
+                                                            </ng-container>
+                                                        </div>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                                <div class="col-2"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <mat-action-row>
+                    <!-- <button mat-raised-button color="warn" (click)="draftAllotments()" *ngIf="!isWithDrawalClicked">Draft</button> -->
+                    <button mat-raised-button color="primary" (click)="draftToFinalSanction()">Final</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>

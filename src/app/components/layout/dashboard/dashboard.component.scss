@@ -1,0 +1,68 @@
+.example-container {
+    height: calc(100vh - 21px);
+    align-items: center;
+    justify-content: center;
+    background: var(--home_body_bg);
+}
+.example-spacer {
+    flex: 1 1 auto;
+}
+.example-list-wrapping {
+    max-width: 500px;
+}
+.search_box {
+    background-color: rgba(212, 212, 212, 0.204);
+    max-height: 70px;
+    border: 1px solid rgba(242, 242, 242, 0.333);
+    font: 1rem sans-serif;
+    padding: 5px;
+    padding-left: 20px;
+    border-radius: 30px;
+}
+.search_box:focus {
+    border: 1px solid red !important;
+}
+.example-sidenav {
+    min-width: min-content;
+    background: var(--sidebar_bg);
+}
+
+%statusBarformat {
+    height: 21px;
+    z-index: 2;
+    position: relative;
+    font-size: small;
+    padding: 0 10px;
+    font-weight: 500;
+    align-items: center !important;
+}
+.statusBar-info {
+    @extend %statusBarformat;
+    background: #5693c9;
+    color: #000000bc;
+    text-shadow: 1px 1px #ffffff3b;
+    border-top: 1px solid #0000003b;
+}
+.statusBar-warn {
+    @extend %statusBarformat;
+    background: #b0ba29;
+    color: #000000bc;
+    text-shadow: 1px 1px #ffffff3b;
+    border-top: 1px solid #00000008;
+}
+.statusBar-danger {
+    @extend %statusBarformat;
+    background: #e33c3c;
+    color: #000000bc;
+    text-shadow: 1px 1px #ffffff3b;
+    border-top: 1px solid #00000008;
+}
+
+.clock {
+    @extend %statusBarformat;
+    background: linear-gradient(#9dcefb, #4c91cc, #73a4d8);
+    border: 1px solid #0000006b;
+    padding: 0 10px;
+    border-radius: 5px;
+    /* height: 18px; */
+}

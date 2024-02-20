@@ -1,0 +1,80 @@
+<div class="mainRoute">
+    <div class="container-fluid">
+        <!--Header Bar : Start -->
+        <secondBar>Budget Release</secondBar>
+        <!--Header Bar : End -->
+
+        <!-- Body : start -->
+        <div class="formDesign py-3 mt-3">
+            <form [formGroup]="parentForm">
+                <div class="row">
+                    <div class="col-md-6 col-lg-6 col-sm-12 text-center mt-2">
+                        <p>
+                            <strong><span>Select Allotment Type for distribution : </span></strong>
+                        </p>
+
+                        <mat-radio-group aria-label="Select an option" formControlName="allotmentType">
+                            <mat-radio-button value="1" [checked]="true">Allotment &nbsp; &nbsp;</mat-radio-button>
+                            <mat-radio-button value="2">Sanction &nbsp;&nbsp;</mat-radio-button>
+                            <mat-radio-button value="3">Grant-in-Aid</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="col-md-6 col-lg-6 col-sm-12 text-center mt-2">
+                        <p>
+                            <strong><span>Select Mode : </span></strong>
+                        </p>
+
+                        <mat-radio-group aria-label="Select an option">
+                            <mat-radio-button value="1" (change)="isMultiReceiverMode = true" [checked]="true">Single HOA to Multi SAO/DDO &nbsp; &nbsp;</mat-radio-button>
+                            <mat-radio-button value="2" (change)="isMultiReceiverMode = false">Multi HOA to Single SAO/DDO</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="mt-3">
+            <appWbBudgetDistEntrySingleHoaToMultiRcvrChild *ngIf="isMultiReceiverMode" (onPayloadReady)="pushIntoPayloads($event)"></appWbBudgetDistEntrySingleHoaToMultiRcvrChild>
+            <appWbBudgetDistEntryMultiHoaToSingleRcvrChild *ngIf="!isMultiReceiverMode" (onPayloadReady)="pushIntoPayloads($event)"></appWbBudgetDistEntryMultiHoaToSingleRcvrChild>
+        </div>
+
+        <div class="formDesign mt-5 p-5 mb-2" *ngIf="payloads.length != 0">
+            <span class="legend">Allotment(s)</span>
+            <table class="mat-table full-width text-center table table-striped table-sm table-bordered m-0">
+                <thead>
+                    <tr>
+                        <th style="text-align: center">Allotment Date</th>
+                        <th style="text-align: center">HOA</th>
+                        <th style="text-align: center">SAO/DDO</th>
+                        <th style="text-align: center">Alloted Amount</th>
+                        <th style="text-align: center">Clear Row</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let pl of payloads; index as i">
+                        <td>{{ pl.allotmentDate }}</td>
+                        <td>{{ pl.hoa.demandNo + "-" + pl.hoa.majorHead + "-" + pl.hoa.submajorHead + "-" + pl.hoa.minorHead + "-" + pl.hoa.schemeHead + "-" + pl.hoa.detailHead + "-" + pl.hoa.subdetailHead + "-" + pl.hoa.votedCharged }}</td>
+                        <td *ngIf="pl.initialMapId == 0 || pl.initialMapId == 1 || pl.initialMapId == 2 || pl.initialMapId == 3 || pl.initialMapId == 4">{{ pl.sao_ddo.code }}</td>
+                        <td *ngIf="pl.initialMapId == 5 || pl.initialMapId == 6">{{ pl.sao_ddo.payload.saoDdo.code }}</td>
+                        <td>₹ {{ pl.amount }}</td>
+                        <td>
+                            <button mat-mini-fab color="primary" (click)="deleteRowFromPayload(i)"><mat-icon>clear</mat-icon></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><strong class="float-end">Total</strong></td>
+                        <td>₹ {{ totalAmount }}</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center mt-4 mb-4">
+            <button mat-button mat-raised-button color="primary" (click)="submitRelease()" matTooltip="Save Chages" *ngIf="payloads.length != 0" matBadge="{{ payloads.length }}" matBadgePosition="after" matBadgeColor="warn">SAVE</button>
+        </div>
+
+        <!-- Body : End -->
+    </div>
+</div>

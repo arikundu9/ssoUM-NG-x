@@ -1,0 +1,291 @@
+<mat-accordion>
+    <mat-expansion-panel [hideToggle]="false" [expanded]="accordionStep === 0" (opened)="setAccordionStep(0)" class="formDesign">
+        <mat-expansion-panel-header>
+            <mat-panel-title>Search Criterias</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-hoa-details (onEnteringHoaDetails)="filterHOA($event)"></app-hoa-details>
+        <!-- <mat-action-row>
+            <button mat-raised-button color="primary" (click)="onHoaSearch()">Search</button>
+        </mat-action-row> -->
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="accordionStep === 1" (opened)="setAccordionStep(1)" class="formDesign">
+        <mat-expansion-panel-header>
+            <mat-panel-title
+                >Available Head of Accounts <span class="badge bg-secondary mx-2" *ngIf="clickedRows.size != 0">{{ clickedRows.size }} SELECTED</span>
+                <span *ngIf="clickedRows.size != 0">: </span>
+                <span class="badge bg-secondary mx-2" *ngFor="let item of clickedRowsAry">{{ item.demandNo + "-" + item.majorHead + "-" + item.submajorHead + "-" + item.minorHead + "-" + item.schemeHead + "-" + item.detailHead + "-" + item.subdetailHead + "-" + item.votedCharged }}</span></mat-panel-title
+            >
+        </mat-expansion-panel-header>
+
+        <!-- Available Head of Accounts Table -->
+        <div class="row pt-0 pb-0">
+            <div class="col-12">
+                <div class="xformDesign">
+                    <table mat-table matSort [dataSource]="copyAllotSource" class="mt-2 mat-elevation-z0 xformDesign full-width">
+                        <!-- aId Column -->
+                        <ng-container matColumnDef="allotmentId">
+                            <th mat-header-cell mat-sort-header="allotmentId" class="mat-tab-header-txt-col text-nowrap" *matHeaderCellDef>Allotment ID</th>
+                            <td mat-cell *matCellDef="let element">{{ element.allotmentId }}</td>
+                        </ng-container>
+
+                        <!-- aDate Column -->
+                        <ng-container matColumnDef="allotmentdate">
+                            <th mat-header-cell mat-sort-header="allotmentdate" class="mat-tab-header-txt-col" *matHeaderCellDef>Allotment Date</th>
+                            <td mat-cell *matCellDef="let element" class="text-nowrap px-1">{{ element.allotmentDate }}</td>
+                        </ng-container>
+
+                        <!-- hoa Column -->
+                        <ng-container matColumnDef="hoa">
+                            <th mat-header-cell mat-sort-header="hoa" class="mat-tab-header-txt-col" *matHeaderCellDef>Head of Account</th>
+                            <td mat-cell *matCellDef="let element" class="text-nowrap px-1">{{ element.demandNo + "-" + element.majorHead + "-" + element.submajorHead + "-" + element.minorHead + "-" + element.schemeHead + "-" + element.detailHead + "-" + element.subdetailHead + "-" + element.votedCharged }}</td>
+                        </ng-container>
+
+                        <!-- allotmentAmmount Column -->
+                        <ng-container matColumnDef="budgetAmt">
+                            <th mat-header-cell mat-sort-header="budgetAmt" class="mat-tab-header-txt-col" *matHeaderCellDef>Budget Amount</th>
+                            <td mat-cell *matCellDef="let element" class="text-nowrap px-1">₹ {{ element.budgetAllotedAmount | number : "1.0-0" }}</td>
+                        </ng-container>
+
+                        <!-- ceilAmmount Column -->
+                        <ng-container matColumnDef="ceilAmt">
+                            <th mat-header-cell mat-sort-header="ceilAmt" class="mat-tab-header-txt-col" *matHeaderCellDef>Ceilling Amount</th>
+                            <td mat-cell *matCellDef="let element" class="text-nowrap px-1">₹ {{ element.ceilingAmount | number : "1.0-0" }}</td>
+                        </ng-container>
+
+                        <!-- balance Column -->
+                        <ng-container matColumnDef="balanceamount">
+                            <th mat-header-cell mat-sort-header="balanceamount" class="mat-tab-header-txt-col" *matHeaderCellDef>Balance Ceilling Amount</th>
+                            <td mat-cell *matCellDef="let element" class="text-nowrap px-1">₹ {{ element.ceilingAmount - element.provisionalReleasedAmount - element.FE_provisional_release | number : "1.0-0" }}</td>
+                        </ng-container>
+
+                        <!-- selection Column -->
+                        <ng-container matColumnDef="selection">
+                            <th mat-header-cell *matHeaderCellDef class="px-2">
+                                <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="clickedRows.size > 0 && isAllSelected()" [indeterminate]="clickedRows.size > 0 && !isAllSelected()"> </mat-checkbox>
+                                <!-- https://stackblitz.com/angular/lrpjroljdly?embed=1&file=app/table-selection-example.html -->
+                            </th>
+                            <td mat-cell *matCellDef="let row" class="px-2">
+                                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? tickRow($event, row) : null" [checked]="clickedRows.has(row)"> </mat-checkbox>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row class="col" *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row [class.demo-row-is-clicked]="clickedRows.has(row)" *matRowDef="let row; columns: displayedColumns"></tr>
+
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" colspan="4">No data matching the filter</td>
+                        </tr>
+                    </table>
+                    <div class="d-flex justify-content-between">
+                        <p class="pt-4">{{ clickedRows.size }} items selected.</p>
+                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"> </mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <mat-action-row>
+            <button mat-raised-button color="primary" (click)="onHoaSelect()" *ngIf="clickedRows.size != 0" matBadge="{{ clickedRows.size }}" matBadgePosition="before" matBadgeColor="warn">Next</button>
+        </mat-action-row>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="accordionStep === 2" (opened)="setAccordionStep(2)" class="formDesign" *ngIf="clickedRows.size != 0">
+        <mat-expansion-panel-header>
+            <!-- <mat-panel-title>
+                Receiver Details<span class="badge bg-secondary mx-3" *ngIf="mapId != null">{{ mapId == EnumReleaseMapType.HOD_to_SAO ? "HOD to SAO" : "HOD to DDO" }}</span>
+                                <span class="badge bg-secondary ml-3" *ngIf="isDdoSelected">DDO : {{ selectedReceiver.code }}</span>
+                                <span class="badge bg-secondary ml-3" *ngIf="isSaoSelected">SAO : {{ selectedReceiver.code }}</span>
+            </mat-panel-title> -->
+            <mat-panel-title>
+                Receiver Details
+                <div>
+                    <span class="badge bg-secondary mx-2" *ngIf="isMapTypeSao">{{ "HOD to SAO" }}</span>
+                    <span *ngIf="isMapTypeSao">:</span>
+                    <span class="badge bg-secondary mx-2" *ngIf="isMapTypeSao">{{ saoSelected?.code }}</span>
+                </div>
+                <div class="mx-5">
+                    <span class="badge bg-secondary mx-2" *ngIf="isMapTypeDdo">{{ "HOD to DDO" }}</span>
+                    <span *ngIf="isMapTypeDdo">:</span>
+                    <span class="badge bg-secondary mx-2" *ngIf="isMapTypeDdo">{{ ddoSelected?.code }}</span>
+                </div>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <form [formGroup]="receiverForm">
+            <div class="row mt-4">
+                <!-- <div class="col-md-3">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Map Type<span style="color: red"> *</span></mat-label>
+                        <mat-select placeholder="Map Type">
+                            <mat-option *ngFor="let mType of mapTypeList" [value]="mType.mapType" (onSelectionChange)="makeAll_isTreasurySelected($event, false); makeAll_isReceiverSelected($event, false); onMapValueSelect($event, mType.mapId)">
+                                {{ mType.mapType }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div> -->
+
+                <div class="col-md-6">
+                    <strong>Distribute to:</strong>
+                    <mat-radio-group aria-label="Select an option" class="ml-3">
+                        <mat-radio-button value="MapDDO" (click)="distToFlag = 'mapped'; resetRcvrForm(); onMapValueSelect($event, mapType ? EnumReleaseMapType.HOD_to_DDO : EnumReleaseMapType.SAO_to_DDO)"> Mapped DDO &nbsp; </mat-radio-button>
+                        <mat-radio-button value="ownDDO" (click)="distToFlag = 'own'; isDistributedToClicked = true; getOwnDdoAndPupulateWithData($event); onMapValueSelect($event, mapType ? EnumReleaseMapType.HOD_to_DDO : EnumReleaseMapType.SAO_to_DDO)"> Own DDO &nbsp;</mat-radio-button>
+                        <mat-radio-button value="allDDO" (click)="distToFlag = 'all'; resetRcvrForm(); isDistributedToClicked = true; onClickAllDdo(); onMapValueSelect($event, mapType ? EnumReleaseMapType.HOD_to_DDO : EnumReleaseMapType.SAO_to_DDO)">All DDO &nbsp;</mat-radio-button>
+                        <mat-radio-button value="sao" (click)="distToFlag = 'sao'; resetRcvrForm(); isDistributedToClicked = true; onMapValueSelect($event, mapType ? EnumReleaseMapType.HOD_to_SAO : EnumReleaseMapType.SAO_to_SAO)">SAO &nbsp;</mat-radio-button>
+                        <mat-radio-button value="favlist" (click)="distToFlag = 'favlist'; onMapValueSelect($event, mapType ? EnumReleaseMapType.HOD_to_SAODDO : EnumReleaseMapType.SAO_to_SAODDO)">FavList</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+                <div class="col-md-3" *ngIf="mapId === EnumReleaseMapType.HOD_to_SAO || mapId === EnumReleaseMapType.SAO_to_SAO">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <input matInput type="text" placeholder="SAO Heirarchy" [matAutocomplete]="saoHeirarchy" formControlName="saoHeirerchy" />
+                        <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                        <mat-label>Sub Alloting Officer Heirarchy</mat-label>
+                        <mat-autocomplete #saoHeirarchy="matAutocomplete">
+                            <mat-option class="" *ngFor="let sao of saoHeirarchyList" [title]="sao.name" (onSelectionChange)="isSaoHeirerchySelected = true; onSaoHeirerchySelect($event, sao)" [value]="sao.name">
+                                {{ sao.name }}
+                            </mat-option>
+                        </mat-autocomplete>
+
+                        <mat-error> Please select SAO Heirarchy</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-3" *ngIf="(mapId === EnumReleaseMapType.HOD_to_SAO || mapId === EnumReleaseMapType.SAO_to_SAO) && isSaoHeirerchySelected">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <input matInput type="text" (keyup)="searchSao($event)" placeholder="SAO Code" [matAutocomplete]="saoLst" formControlName="saoCode" />
+                        <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                        <mat-label>Sub Alloting Officer</mat-label>
+                        <mat-autocomplete #saoLst="matAutocomplete" placeholder="Select Sub Alloting Officer">
+                            <mat-option class="" *ngFor="let sao of saoList" [title]="sao.name" (onSelectionChange)="isSaoSelected = true; onSaoSelect($event, sao, 0)" [value]="sao.code.toString().trim()">
+                                <mat-checkbox [checked]="selectedReceiver.includes(sao)" (change)="tickSao(sao)" (click)="$event.stopPropagation()"> {{ sao.code }}:{{ sao.name }} </mat-checkbox>
+                            </mat-option>
+                        </mat-autocomplete>
+                        <mat-error> Please select SAO </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- <div class="col-md-3 mt-2" *ngIf="distToFlag == 'own'">
+                    <mat-label><strong>Own DDO:</strong></mat-label>
+                    {{ receiverStruct.selectedReceiver.ddo_id }} : {{ receiverStruct.selectedReceiver.ddu_uname }}
+                    : {{ receiverStruct.selectedReceiver.first_name }}
+                    <span *ngIf="receiverStruct.selectedReceiver.middle_name != null">{{
+                        receiverStruct.selectedReceiver.middle_name }}</span>
+                    {{ receiverStruct.selectedReceiver.last_name }}
+                </div> -->
+
+                <div class="col-md-3" *ngIf="isDistributedToClicked && distToFlag == 'all' && (mapId === EnumReleaseMapType.HOD_to_DDO || mapId === EnumReleaseMapType.SAO_to_DDO)">
+                    <mat-form-field class="full-width" appearance="outline">
+                        <input matInput type="text" (keyup)="searchTreasury($event)" placeholder="Treasury Code" [matAutocomplete]="treasuryCode" formControlName="tresuryCode" />
+                        <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                        <mat-label>Treasury Code</mat-label>
+                        <mat-autocomplete #treasuryCode="matAutocomplete" (optionSelected)="bindDdoForSelectedTreasury(0)">
+                            <mat-option class="ctm-auto-ddl" *ngFor="let treasury of treasuryList" [title]="treasury.code" (onSelectionChange)="isTreasurySelected = true; onTreasurySelect($event, treasury.code, 0)" [value]="treasury.code + '  :  ' + treasury.districtName"> {{ treasury.code }} : {{ treasury.districtName }} </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-3" *ngIf="isTreasurySelected && (mapId === EnumReleaseMapType.HOD_to_DDO || mapId === EnumReleaseMapType.SAO_to_DDO)">
+                    <mat-form-field class="full-width" appearance="outline">
+                        <input matInput type="text" (keyup)="searchDdo($event)" placeholder="DDO Code" [matAutocomplete]="cChild" formControlName="ddoCode" />
+                        <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                        <mat-label>DDO Code</mat-label>
+                        <mat-autocomplete #cChild="matAutocomplete">
+                            <mat-option class="ctm-auto-ddl" *ngFor="let ddo of ddoList" [title]="ddo.designation" (onSelectionChange)="isDdoSelected = true; onDdoSelect($event, ddo, 0)" [value]="ddo.code + '  :  ' + ddo.designation" id="receiverDdo">
+                                <mat-checkbox [checked]="selectedReceiver.includes(ddo)" (change)="tickDdo(ddo)" (click)="$event.stopPropagation()"> {{ ddo.code }} : {{ ddo.designation }} </mat-checkbox>
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-3" *ngIf="mapId === EnumReleaseMapType.HOD_to_SAODDO || mapId === EnumReleaseMapType.SAO_to_SAODDO">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <input matInput type="text" placeholder="SAO/DDO" [matAutocomplete]="Saoddo" formControlName="saoDdoCode" />
+                        <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                        <mat-label>SAO/DDO</mat-label>
+                        <mat-autocomplete #Saoddo="matAutocomplete">
+                            <mat-option class="" *ngFor="let saoddo of saoDdoList" [title]="saoddo.payload.saoDdo.code" (onSelectionChange)="onSaoDdoSelect($event, saoddo)" [value]="saoddo.payload.saoDdo.code"> {{ saoddo.payload.saoDdo.code }} : {{ saoddo.payload.saoDdo.name }} </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <!-- <mat-error *ngIf="amountFormSAODDO.controls.saoDdoCode.touched && amountFormSAODDO.controls.saoDdoCode.invalid && amountFormSAODDO.controls.saoDdoCode.errors?.required">Please select SAO/DDO</mat-error> -->
+                </div>
+            </div>
+        </form>
+        <mat-action-row>
+            <!-- <button mat-raised-button color="warn" (click)="prevAccordionStep()">Previous</button> -->
+            <button mat-raised-button color="primary" (click)="onReceiverSelect(); convertToArrayFromSet()">Next</button>
+        </mat-action-row>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [hideToggle]="false" [expanded]="accordionStep === 3" (opened)="setAccordionStep(3)" class="formDesign" *ngIf="clickedRows.size != 0 && (isDdoSelected || isSaoSelected || isSaoDdoSelected)">
+        <mat-expansion-panel-header>
+            <mat-panel-title>Set Amount</mat-panel-title>
+            <mat-panel-description></mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <form [formGroup]="amountForm" *ngIf="isDdoSelected || isSaoSelected || isSaoDdoSelected">
+            <div class="row mt-3">
+                <table class="mat-table full-width text-center table table-striped table-sm table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center">Allotment Date</th>
+                            <th style="text-align: center">HOA</th>
+                            <th style="text-align: center">Balance Ceilling Amount</th>
+                            <th style="text-align: center">Alloted Amount</th>
+                            <th style="text-align: center">Ceilling Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-label>Allotment Date</mat-label>
+                                    <input matInput type="text" formControlName="allotmentDate" autocomplete="off" readonly />
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-label>Select Head of Account : </mat-label>
+                                    <mat-select placeholder="HOA" formControlName="hoa">
+                                        <mat-option *ngFor="let rows of clickedRowsArray; index as i" value="rows" (onSelectionChange)="onClicledRowSelect($event, rows, i)">
+                                            {{ rows.demandNo + "-" + rows.majorHead + "-" + rows.submajorHead + "-" + rows.minorHead + "-" + rows.schemeHead + "-" + rows.detailHead + "-" + rows.subdetailHead + "-" + rows.votedCharged }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-error *ngIf="amountForm.controls.hoa.touched && amountForm.controls.hoa.invalid && amountForm.controls.hoa.errors?.required">Please select a HOA</mat-error>
+                            </td>
+                            <td>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-label>Balance Ceilling Amount</mat-label>
+                                    <span matPrefix>₹&nbsp;</span>
+                                    <input matInput type="number" formControlName="balCeilAmt" autocomplete="off" readonly />
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-label>Alloted Amount</mat-label>
+                                    <span matPrefix>₹&nbsp;</span>
+                                    <input matInput type="number" formControlName="allotedAmt" autocomplete="off" (keyup)="calCielAmt()" />
+                                </mat-form-field>
+                                <mat-error>
+                                    <custom-mat-error [control]="amountForm.controls.allotedAmt"></custom-mat-error>
+                                </mat-error>
+                            </td>
+                            <td>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-label>Ceilling Amount</mat-label>
+                                    <span matPrefix>₹&nbsp;</span>
+                                    <input matInput type="number" formControlName="ceilAmt" autocomplete="off" readonly />
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+
+        <mat-action-row>
+            <button mat-raised-button color="primary" (click)="emitPayload()">Add</button>
+        </mat-action-row>
+    </mat-expansion-panel>
+</mat-accordion>

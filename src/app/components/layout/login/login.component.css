@@ -1,0 +1,15 @@
+.redBox {
+    border: 1px solid red;
+}
+.example-form {
+    /* min-width: 550px; */
+    /* max-width: 500px; */
+    width: 100%;
+}
+
+.example-full-width {
+    width: 100%;
+}
+.bg{
+    background-color: #dedede;
+}

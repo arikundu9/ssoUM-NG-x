@@ -1,0 +1,357 @@
+<div class="container-fluid">
+    <secondBar>Sanction Letter Management</secondBar>
+    <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false">
+        <mat-expansion-panel [hideToggle]="false" [expanded]="accordionStep === 0" (opened)="setAccordionStep(0)" class="formDesign mt-3">
+            <mat-expansion-panel-header>
+                <mat-panel-title><strong>Search Criteria</strong></mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="row p-3" [formGroup]="allotmentTypeForm">
+                <div class="col-6">
+                    <p>
+                        <strong><span>Print Type :</span></strong>
+                    </p>
+                    <mat-radio-group aria-label="Select an option" formControlName="printType">
+                        <mat-radio-button value="1" [checked]="true" (click)="newPrint()">New &nbsp;</mat-radio-button>
+                        <mat-radio-button value="2" (click)="rePrint()">Reprint &nbsp; </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+                <div class="col-6">
+                    <p>
+                        <strong><span class="ctm-black_bold_clr">Allotment :</span></strong>
+                    </p>
+                    <mat-radio-group aria-label="Select an option" formControlName="allotmentType">
+                        <mat-radio-button [value]="getEnumSanctionType.Allotment" (change)="isSanctionedClicked = false">Allotment &nbsp;</mat-radio-button>
+                        <mat-radio-button [value]="getEnumSanctionType.GrantInHead" (change)="isSanctionedClicked = false">Grant-in-Aid &nbsp; </mat-radio-button>
+                        <mat-radio-button [value]="getEnumSanctionType.Sanction" (change)="isSanctionedClicked = true">Sanction &nbsp; </mat-radio-button>
+                        <mat-radio-button [value]="getEnumSanctionType.Withdrawl" (change)="isSanctionedClicked = false; isWithDrawalClicked = true">Withdrwal &nbsp; </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+
+            <div [formGroup]="sanctionForm">
+                <div class="row p-3">
+                    <div class="col-3" *ngIf="!isReprintClicked">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <input matInput formControlName="demandCode" type="text" placeholder="Demand Code" [matAutocomplete]="demandCode" id="" (keyup)="searchDemand($event)" />
+                            <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                            <mat-label>Demand Code</mat-label>
+
+                            <mat-autocomplete #demandCode="matAutocomplete" (optionSelected)="getMajorHead()">
+                                <mat-option class="ctm-auto-ddl" *ngFor="let demand of demandCodeList" [title]="demand.name" (onSelectionChange)="onDemandSelect($event, demand.demandCode)" [value]="demand.demandCode"> {{ demand.demandCode }}:{{ demand.name }} </mat-option>
+                            </mat-autocomplete>
+
+                            <mat-error><custom-mat-error [control]="sanctionFormErrorControl.demandCode"></custom-mat-error></mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-3" *ngIf="!isReprintClicked">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <input matInput formControlName="majorHead" type="text" placeholder="Major Head" [matAutocomplete]="mjrHd" (keyup)="searchMajorHead($event)" />
+                            <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                            <mat-label>Major Head</mat-label>
+
+                            <mat-autocomplete #mjrHd="matAutocomplete">
+                                <mat-option class="ctm-auto-ddl" *ngFor="let majorHead of majorHeadList" [title]="majorHead.name" [value]="majorHead.code"> {{ majorHead.code }}:{{ majorHead.name }} </mat-option>
+                            </mat-autocomplete>
+
+                            <mat-error><custom-mat-error [control]="sanctionFormErrorControl.majorHead"></custom-mat-error></mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-3" *ngIf="isReprintClicked">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <input matInput type="text" placeholder="Memo Number" formControlName="memoNumber" [matAutocomplete]="memoNo" />
+                            <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                            <mat-label>Memo Number</mat-label>
+                            <mat-autocomplete #memoNo="matAutocomplete">
+                                <mat-option class="" *ngFor="let memo of memoList" (onSelectionChange)="isMemoSelected = true; getMemo($event, memo)" [value]="memo">
+                                    {{ memo }}
+                                </mat-option>
+                            </mat-autocomplete>
+
+                            <mat-error><custom-mat-error [control]="sanctionFormErrorControl.memoNumber"></custom-mat-error></mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-3">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Distribution Date From</mat-label>
+                            <input formControlName="dateFrom" matInput [matDatepicker]="picker1" placeholder="Distribution Date From(/DD/MM/YYYY)" />
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-3">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Distribution Date To</mat-label>
+                            <input formControlName="dateTo" matInput [matDatepicker]="picker2" placeholder="Distribution Date To(DD/MM/YYYY)" />
+                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <mat-action-row>
+                <button *ngIf="!isReprintClicked" mat-raised-button color="primary" (click)="searchForSanction()">Search <i matSuffix class="fa fa-search"></i></button>
+                <button *ngIf="isReprintClicked" mat-raised-button color="primary" (click)="generateReport()">Generate Report</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="accordionStep === 1" (opened)="setAccordionStep(1)" class="formDesign" *ngIf="!isReprintClicked">
+            <mat-expansion-panel-header>
+                <mat-panel-title> <strong>Search Result</strong> </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="mt-3" *ngIf="isSearchClicked">
+                <table mat-table matSort [dataSource]="allotSource" class="mt-2 mat-elevation-z0 xformDesign full-width">
+                    <!-- Allotment ID column for different Allotment Type -->
+                    <ng-container matColumnDef="allotmentId" *ngIf="allotmentTypeForm.value.allotmentType === getEnumSanctionType.Allotment">
+                        <th mat-header-cell mat-sort-header="allot_ID" *matHeaderCellDef>Allotment ID</th>
+                        <td mat-cell *matCellDef="let element">{{ element.allotmentId }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="allotmentId" *ngIf="allotmentTypeForm.value.allotmentType === getEnumSanctionType.Withdrawl">
+                        <th mat-header-cell mat-sort-header="allot_ID" *matHeaderCellDef>Allotment ID</th>
+                        <td mat-cell *matCellDef="let element">{{ element.withdrawlId }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="allotmentId" *ngIf="allotmentTypeForm.value.allotmentType === getEnumSanctionType.GrantInHead">
+                        <th mat-header-cell mat-sort-header="allot_ID" *matHeaderCellDef>Allotment ID</th>
+                        <td mat-cell *matCellDef="let element">{{ element.allotmentId }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="allotmentId" *ngIf="allotmentTypeForm.value.allotmentType === getEnumSanctionType.Sanction">
+                        <th mat-header-cell mat-sort-header="allot_ID" *matHeaderCellDef>Allotment ID</th>
+                        <td mat-cell *matCellDef="let element">{{ element.allotmentId }}</td>
+                    </ng-container>
+
+                    <!-- Allotment Date column for different Allotment Type -->
+                    <ng-container matColumnDef="alootmentDate" *ngIf="allotmentTypeForm.value.allotmentType === getEnumSanctionType.Allotment">
+                        <th mat-header-cell mat-sort-header="allot_DATE" *matHeaderCellDef>Allotment Date</th>
+                        <td mat-cell *matCellDef="let element">{{ element.allotmentDate }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="alootmentDate" *ngIf="allotmentTypeForm.value.allotmentType === getEnumSanctionType.Withdrawl">
+                        <th mat-header-cell mat-sort-header="allot_DATE" *matHeaderCellDef>Allotment Date</th>
+                        <td mat-cell *matCellDef="let element">{{ element.createdAt }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="alootmentDate" *ngIf="allotmentTypeForm.value.allotmentType === getEnumSanctionType.GrantInHead">
+                        <th mat-header-cell mat-sort-header="allot_DATE" *matHeaderCellDef>Allotment Date</th>
+                        <td mat-cell *matCellDef="let element">{{ element.createdAt }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="alootmentDate" *ngIf="allotmentTypeForm.value.allotmentType === getEnumSanctionType.Sanction">
+                        <th mat-header-cell mat-sort-header="allot_DATE" *matHeaderCellDef>Allotment Date</th>
+                        <td mat-cell *matCellDef="let element">{{ element.createdAt }}</td>
+                    </ng-container>
+
+                    <!-- Sub Allotting Officer/DDO Code column for different Allotment Type -->
+                    <ng-container matColumnDef="saoDdoCode" *ngIf="allotmentTypeForm.value.allotmentType === getEnumSanctionType.Allotment">
+                        <th mat-header-cell mat-sort-header="saoDdo" *matHeaderCellDef>Sub Allotting Officer/DDO Code</th>
+                        <td mat-cell *matCellDef="let element">{{ element.receiverSaoDdoCode }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="saoDdoCode" *ngIf="allotmentTypeForm.value.allotmentType === getEnumSanctionType.Withdrawl">
+                        <th mat-header-cell mat-sort-header="saoDdo" *matHeaderCellDef>Sub Allotting Officer/DDO Code</th>
+                        <td mat-cell *matCellDef="let element">{{ element.receiverCode }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="saoDdoCode" *ngIf="allotmentTypeForm.value.allotmentType === getEnumSanctionType.GrantInHead">
+                        <th mat-header-cell mat-sort-header="saoDdo" *matHeaderCellDef>Sub Allotting Officer/DDO Code</th>
+                        <td mat-cell *matCellDef="let element">{{ element.receiverSaoDdoCode }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="saoDdoCode" *ngIf="allotmentTypeForm.value.allotmentType === getEnumSanctionType.Sanction">
+                        <th mat-header-cell mat-sort-header="saoDdo" *matHeaderCellDef>Sub Allotting Officer/DDO Code</th>
+                        <td mat-cell *matCellDef="let element">{{ element.receiverSaoDdoCode }}</td>
+                    </ng-container>
+
+                    <!-- <ng-container matColumnDef="grantType">
+                        <th mat-header-cell mat-sort-header="grantTxnType" *matHeaderCellDef>Grant Type</th>
+                        <td mat-cell *matCellDef="let element">
+                            <span *ngIf="element.transactionType === 1">Released</span>
+                            <span *ngIf="element.transactionType === 2">Revoked</span>
+                        </td>
+                    </ng-container> -->
+
+                    <ng-container matColumnDef="hoa">
+                        <th mat-header-cell mat-sort-header="hoa" class="mat-tab-header-txt-col" *matHeaderCellDef>Head of Account</th>
+                        <td mat-cell *matCellDef="let element">{{ element.demandNo + "-" + element.majorHead + "-" + element.submajorHead + "-" + element.minorHead + "-" + element.schemeHead + "-" + element.detailHead + "-" + element.subdetailHead + "-" + element.votedCharged }}</td>
+                    </ng-container>
+
+                    <!-- Amount column for different Allotment Type -->
+                    <ng-container matColumnDef="amount" *ngIf="allotmentTypeForm.value.allotmentType === getEnumSanctionType.Allotment">
+                        <th mat-header-cell mat-sort-header="amount" *matHeaderCellDef>₹ Amount</th>
+                        <td mat-cell *matCellDef="let element">{{ element.budgetAllotedAmount | number : "1.0-0" }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="amount" *ngIf="allotmentTypeForm.value.allotmentType === getEnumSanctionType.Withdrawl">
+                        <th mat-header-cell mat-sort-header="amount" *matHeaderCellDef>₹ Amount</th>
+                        <td mat-cell *matCellDef="let element">{{ element.withdrawlAmount | number : "1.0-0" }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="amount" *ngIf="allotmentTypeForm.value.allotmentType === getEnumSanctionType.GrantInHead">
+                        <th mat-header-cell mat-sort-header="amount" *matHeaderCellDef>₹ Amount</th>
+                        <td mat-cell *matCellDef="let element">{{ element.budgetAllotedAmount | number : "1.0-0" }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="amount" *ngIf="allotmentTypeForm.value.allotmentType === getEnumSanctionType.Sanction">
+                        <th mat-header-cell mat-sort-header="amount" *matHeaderCellDef>₹ Amount</th>
+                        <td mat-cell *matCellDef="let element">{{ element.budgetAllotedAmount | number : "1.0-0" }}</td>
+                    </ng-container>
+
+                    <!-- selection Column -->
+                    <ng-container matColumnDef="selection">
+                        <th mat-header-cell *matHeaderCellDef>
+                            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="clickedRows.size > 0 && isAllSelected()" [indeterminate]="clickedRows.size > 0 && !isAllSelected()"> </mat-checkbox>
+                            <!-- https://stackblitz.com/angular/lrpjroljdly?embed=1&file=app/table-selection-example.html -->
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? tickRow($event, row) : null" [checked]="clickedRows.has(row)"> </mat-checkbox>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row class="col" *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row [class.demo-row-is-clicked]="clickedRows.has(row)" *matRowDef="let row; columns: displayedColumns"></tr>
+
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4">No data matching the filter</td>
+                    </tr>
+                </table>
+                <div class="d-flex justify-content-between">
+                    <p class="pt-4">{{ clickedRows.size }} items selected.</p>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"> </mat-paginator>
+                </div>
+            </div>
+
+            <mat-action-row class="p-1 d-flex justify-content-between">
+                <button mat-raised-button color="warn" (click)="prevAccordionStep()">Previous</button>
+                <button mat-raised-button color="primary" (click)="goForSanction()">Next</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="accordionStep === 2" (opened)="setAccordionStep(2)" class="formDesign" *ngIf="!isReprintClicked">
+            <mat-expansion-panel-header>
+                <mat-panel-title><strong>Memo Generation</strong></mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="row mt-2" *ngIf="isAllotmentSelected">
+                <div class="col-12">
+                    <form [formGroup]="memoForm">
+                        <div class="row">
+                            <div class="col-2"></div>
+
+                            <div class="col-8">
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <input matInput type="text" placeholder="" formControlName="memoNo" />
+                                    <mat-label>Memo Number *</mat-label>
+                                    <mat-error><custom-mat-error [control]="memoFormErrorControl.memoNo"></custom-mat-error></mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="full-width mt-3">
+                                    <mat-label>Memo Date</mat-label>
+                                    <input formControlName="date" matInput [matDatepicker]="picker3" [(ngModel)]="today" readonly />
+                                    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker3></mat-datepicker>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="full-width" *ngIf="isSanctionedClicked">
+                                    <input matInput type="text" placeholder="" formControlName="nameOfProject" />
+                                    <mat-label>Name Of Scheme/Project</mat-label>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="full-width" *ngIf="isSanctionedClicked">
+                                    <input matInput type="text" placeholder="" formControlName="puprposeOfSanction" />
+                                    <mat-label>Purpose of Sanction</mat-label>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="full-width" *ngIf="isSanctionedClicked">
+                                    <input matInput type="text" placeholder="" formControlName="administrativeOrderNo" />
+                                    <mat-label>Administrative Order Number</mat-label>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="full-width" *ngIf="isSanctionedClicked">
+                                    <mat-label>Administrative Order Date</mat-label>
+                                    <input formControlName="administrativeOrderDate" matInput [matDatepicker]="picker4" [(ngModel)]="today" />
+                                    <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker4></mat-datepicker>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="full-width" *ngIf="isSanctionedClicked">
+                                    <input matInput type="number" placeholder="" formControlName="adminApprovalAmt" />
+                                    <mat-label>Admin Approval Amount</mat-label>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="full-width" *ngIf="isSanctionedClicked">
+                                    <input matInput type="text" placeholder="" formControlName="authority" />
+                                    <mat-label>Authority</mat-label>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="full-width" *ngIf="isSanctionedClicked">
+                                    <input matInput type="number" placeholder="" formControlName="totalFundSanction" />
+                                    <mat-label>Total Fund Sanctioned Till Date</mat-label>
+                                </mat-form-field>
+
+                                <div class="d-flex mb-3" *ngIf="isSanctionedClicked">
+                                    <span>UC Required : &nbsp;</span>
+                                    <mat-radio-group aria-label="Select an option" formControlName="ucType">
+                                        <mat-radio-button value="yes">Yes &nbsp;</mat-radio-button>
+                                        <mat-radio-button value="no" [checked]="true">No &nbsp; </mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+
+                                <mat-form-field appearance="outline" class="full-width" *ngIf="isSanctionedClicked">
+                                    <input matInput type="text" placeholder="" formControlName="fdGroup" />
+                                    <mat-label>FD Group</mat-label>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <textarea matInput type="text" placeholder="" formControlName="remarks" class="box"></textarea>
+                                    <mat-label>Remarks</mat-label>
+                                    <mat-error><custom-mat-error [control]="memoFormErrorControl.remarks"></custom-mat-error></mat-error>
+                                </mat-form-field>
+
+                                <p>(Maximum characters: 500)</p>
+
+                                <p class="text-danger" *ngIf="memoForm.controls['remarks'].hasError('maxlength')">Remarks cannot exceed 500 characters.</p>
+                            </div>
+
+                            <div class="col-2"></div>
+                        </div>
+
+                        <div class="row mx-0">
+                            <div class="col-2"></div>
+                            <div class="col-8">
+                                <strong>Copy Forwarded To :</strong>
+                                <br /><br />
+                                <button type="button" mat-raised-button color="primary" (click)="addcopyForwardController()" class="mb-4">Add</button>
+                                <div class="row">
+                                    <ng-container [formGroup]="memoForm">
+                                        <ng-container formArrayName="copyForward">
+                                            <ng-container *ngFor="let copyFwrdFormStruct of copyForwardArray.controls; let i = index">
+                                                <ng-container [formGroupName]="i">
+                                                    <div class="col-11">
+                                                        <ng-container style="text-align: center">
+                                                            <mat-form-field class="full-width" appearance="outline">
+                                                                <input matInput type="text" formControlName="cf" required />
+                                                            </mat-form-field>
+                                                        </ng-container>
+                                                    </div>
+
+                                                    <div class="col-1">
+                                                        <ng-container style="text-align: center">
+                                                            <button class="mt-1" mat-mini-fab color="primary" (click)="deletecopyForwardController(i)"><mat-icon>clear</mat-icon></button>
+                                                        </ng-container>
+                                                    </div>
+                                                </ng-container>
+                                            </ng-container>
+                                        </ng-container>
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <div class="col-2"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <mat-action-row>
+                <button mat-raised-button color="warn" (click)="draftAllotments()" *ngIf="!isWithDrawalClicked">Draft</button>
+                <button mat-raised-button color="primary" (click)="sanctionAllotments()">Final</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

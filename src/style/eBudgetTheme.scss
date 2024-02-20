@@ -1,0 +1,136 @@
+@use "@angular/material" as mat;
+@use "sass:map";
+
+@include mat.core();
+// Color palettes from the Material Design spec.
+// See https://material.io/design/color/
+//
+// Contrast colors are hard-coded because it is too difficult (probably impossible) to
+// calculate them. These contrast colors are pulled from the public Material Design spec swatches.
+// While the contrast colors in the spec are not prescriptive, we use them for convenience.
+
+// @deprecated renamed to $dark-primary-text.
+// @breaking-change 8.0.0
+$black-87-opacity: rgba(black, 0.87);
+// @deprecated renamed to $light-primary-text.
+// @breaking-change 8.0.0
+$white-87-opacity: rgba(white, 0.87);
+// @deprecated use $dark-[secondary-text,disabled-text,dividers,focused] instead.
+// @breaking-change 8.0.0
+$black-12-opacity: rgba(black, 0.12);
+// @deprecated use $light-[secondary-text,disabled-text,dividers,focused] instead.
+// @breaking-change 8.0.0
+$white-12-opacity: rgba(white, 0.12);
+// @deprecated use $dark-[secondary-text,disabled-text,dividers,focused] instead.
+// @breaking-change 8.0.0
+$black-6-opacity: rgba(black, 0.06);
+// @deprecated use $light-[secondary-text,disabled-text,dividers,focused] instead.
+// @breaking-change 8.0.0
+$white-6-opacity: rgba(white, 0.06);
+
+$dark-primary-text: rgba(black, 0.87);
+$dark-secondary-text: rgba(black, 0.54);
+$dark-disabled-text: rgba(black, 0.38);
+$dark-dividers: rgba(black, 0.12);
+$dark-focused: rgba(black, 0.12);
+$light-primary-text: white;
+$light-secondary-text: rgba(white, 0.7);
+$light-disabled-text: rgba(white, 0.5);
+$light-dividers: rgba(white, 0.12);
+$light-focused: rgba(white, 0.12);
+
+$eB_primary_palette: (
+    50: #e4f2f8,
+    100: #bcdeef,
+    200: #93cae5,
+    300: #6db5db,
+    400: #50a5d5,
+    500: #3697d0,
+    600: #2a8ac4,
+    700: #1d79b2,
+    800: #1368a1,
+    900: #004c82,
+    A100: #82b1ff,
+    A200: #448aff,
+    A400: #2979ff,
+    A700: #2962ff,
+    contrast: (
+        50: $black-87-opacity,
+        100: $black-87-opacity,
+        200: $black-87-opacity,
+        300: $black-87-opacity,
+        400: $black-87-opacity,
+        500: white,
+        600: white,
+        700: white,
+        800: $white-87-opacity,
+        900: $white-87-opacity,
+        A100: $black-87-opacity,
+        A200: white,
+        A400: white,
+        A700: white,
+    ),
+);
+
+$eB_accent_palette: (
+    50: #dff1f0,
+    100: #afddd8,
+    200: #7bc8bf,
+    300: #45b2a6,
+    400: #13a193,
+    500: #009080,
+    600: #008473,
+    700: #007464,
+    800: #006455,
+    900: #00483a,
+    A100: #82b1ff,
+    A200: #448aff,
+    A400: #2979ff,
+    A700: #2962ff,
+    contrast: (
+        50: $black-87-opacity,
+        100: $black-87-opacity,
+        200: $black-87-opacity,
+        300: $black-87-opacity,
+        400: $black-87-opacity,
+        500: white,
+        600: white,
+        700: white,
+        800: $white-87-opacity,
+        900: $white-87-opacity,
+        A100: $black-87-opacity,
+        A200: white,
+        A400: white,
+        A700: white,
+    ),
+);
+
+$eB_primary: mat.define-palette($eB_primary_palette, 800);
+$eB_accent: mat.define-palette($eB_accent_palette, 400);
+
+// The "warn" palette is optional and defaults to red if not specified.
+$eB_warn: mat.define-palette(mat.$red-palette);
+
+$eB_theme: mat.define-light-theme(
+    (
+        color: (
+            primary: $eB_primary,
+            accent: $eB_accent,
+            warn: $eB_warn,
+        ),
+    )
+);
+$eB_darkTheme: mat.define-dark-theme(
+    (
+        color: (
+            primary: mat.define-palette($eB_primary_palette, 900),
+            accent: mat.define-palette($eB_accent_palette, 500),
+            warn: $eB_warn,
+        ),
+    )
+);
+@include mat.all-component-themes($eB_theme);
+
+body.darkMode {
+    @include mat.all-component-themes($eB_darkTheme);
+}

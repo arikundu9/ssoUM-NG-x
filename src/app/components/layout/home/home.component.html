@@ -1,0 +1,280 @@
+<div class="mainRoute">
+    <div class="container-fluid">
+        <!--Header Bar : Start -->
+        <secondBar>Dashboard</secondBar>
+        <!--Header Bar : End -->
+
+        <!-- Body : start -->
+
+        <div class="row formDesign p-2 mt-3 mb-3" style="margin: auto">
+            <form [formGroup]="filterForm">
+                <div class="d-lg-flex justify-content-between">
+                    <div>
+                        <mat-button-toggle-group formControlName="selectedStatus">
+                            <mat-button-toggle value="ALL">ALL</mat-button-toggle>
+                            <mat-button-toggle value="release">Release</mat-button-toggle>
+                            <mat-button-toggle value="revoke">Revoke</mat-button-toggle>
+                            <mat-button-toggle value="reappropriation">Re-Appropriation</mat-button-toggle>
+                        </mat-button-toggle-group>
+                        <button mat-raised-button color="accent" class="mx-3" type="button" (click)="ExportTOExcel()">Export To Excel <i class="fas fa-file-excel"></i></button>
+                    </div>
+                    <div>
+                        <mat-form-field>
+                            <mat-label>Search...</mat-label>
+                            <input matInput type="text" formControlName="filterString" (keyup)="applyFilter()" />
+
+                            <!-- <button mat-button matSuffix color="primary">
+                                <mat-icon>search</mat-icon>
+                            </button> -->
+                        </mat-form-field>
+                        <button mat-mini-fab color="primary">
+                            <mat-icon>search</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="" #DataTable>
+                <!-- <mat-chip-list #chipList aria-label="Fruit selection">
+                    <mat-chip *ngFor="let fruit of keywords" (removed)="remove(fruit)" class="chip">
+                        {{ fruit }}
+                        <button matChipRemove>
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip>
+                </mat-chip-list> -->
+                <table mat-table matSort matSortActive="status" matSortDirection="asc" [dataSource]="allotSource" class="my-2 mat-elevation-z2 full-width">
+                    <ng-container matColumnDef="filter_allotmentid">
+                        <th mat-header-cell class="mat-tab-header-txt-col" *matHeaderCellDef>
+                            <mat-select multiple #allotIdSelector style="width: min-content">
+                                <mat-select-trigger>
+                                    {{ allotIdSelector.value?.length + " filter" }}
+                                </mat-select-trigger>
+                                <mat-option *ngFor="let topping of keywords" [value]="topping">{{ topping }}</mat-option>
+                            </mat-select>
+                        </th>
+                    </ng-container>
+                    <ng-container matColumnDef="allotmentid">
+                        <th mat-header-cell mat-sort-header="allotmentId" class="mat-tab-header-txt-col" *matHeaderCellDef>Allotment ID</th>
+                        <td mat-cell *matCellDef="let element">{{ element.allotmentId }}</td>
+                    </ng-container>
+
+                    <!-- aDate Column -->
+                    <ng-container matColumnDef="filter_allotmentdate">
+                        <th mat-header-cell class="mat-tab-header-txt-col" *matHeaderCellDef>
+                            <input type="text" class="filterInput" placeholder="Filter🔍" [matAutocomplete]="auto" />
+                            <mat-autocomplete #auto="matAutocomplete" multiple>
+                                <mat-option *ngFor="let street of keywords" [value]="street">
+                                    {{ street }}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </th>
+                    </ng-container>
+                    <ng-container matColumnDef="allotmentdate">
+                        <th mat-header-cell mat-sort-header="allotmentDate" class="mat-tab-header-txt-col" *matHeaderCellDef>Allotment Date</th>
+                        <td mat-cell *matCellDef="let element">{{ element.allotmentDate }}</td>
+                        <!-- <td mat-cell *matCellDef="let element">{{ element.createdAt | date : "yyyy-MM-dd" }}</td> -->
+                    </ng-container>
+
+                    <ng-container matColumnDef="filter_saoDdo">
+                        <th mat-header-cell class="mat-tab-header-txt-col" *matHeaderCellDef>
+                            <input type="text" class="filterInput" placeholder="Filter🔍" />
+                        </th>
+                    </ng-container>
+                    <ng-container matColumnDef="saoDdo">
+                        <th mat-header-cell mat-sort-header="receiverSaoDdoCode" class="mat-tab-header-txt-col" *matHeaderCellDef>Sub Alloting Officer/DDO</th>
+                        <td mat-cell *matCellDef="let element">{{ element.receiverSaoDdoCode }}</td>
+                    </ng-container>
+
+                    <!-- hoa Column -->
+                    <ng-container matColumnDef="filter_hoa">
+                        <th mat-header-cell class="mat-tab-header-txt-col" *matHeaderCellDef>
+                            <input type="text" class="filterInput" placeholder="Filter🔍" />
+                        </th>
+                    </ng-container>
+                    <ng-container matColumnDef="hoa">
+                        <th mat-header-cell mat-sort-header="hoa" class="mat-tab-header-txt-col" *matHeaderCellDef>Head of Account</th>
+                        <td mat-cell *matCellDef="let element" style="white-space: nowrap; padding-right: 10px">{{ element.demandNo + "-" + element.majorHead + "-" + element.submajorHead + "-" + element.minorHead + "-" + element.schemeHead + "-" + element.detailHead + "-" + element.subdetailHead + "-" + element.votedCharged }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="filter_balanceCeilamount">
+                        <th mat-header-cell class="mat-tab-header-txt-col" *matHeaderCellDef></th>
+                    </ng-container>
+                    <ng-container matColumnDef="balanceCeilamount">
+                        <th mat-header-cell mat-sort-header="balanceceilamount" class="mat-tab-header-txt-col" *matHeaderCellDef>₹ Balance Ceilling Amount</th>
+                        <td mat-cell *matCellDef="let element">₹ {{ element.ceilingAmount - element.provisionalReleasedAmount | number : "1.0-0" }}/-</td>
+                    </ng-container>
+
+                    <!-- balance Column -->
+                    <ng-container matColumnDef="filter_allotedAmount">
+                        <th mat-header-cell class="mat-tab-header-txt-col" *matHeaderCellDef></th>
+                    </ng-container>
+                    <ng-container matColumnDef="allotedAmount">
+                        <th mat-header-cell mat-sort-header="budgetAllotedAmount" class="mat-tab-header-txt-col" *matHeaderCellDef>₹ Alloted Amount</th>
+                        <td mat-cell *matCellDef="let element">₹ {{ element.budgetAllotedAmount | number : "1.0-0" }}/-</td>
+                    </ng-container>
+
+                    <!-- status Column -->
+                    <ng-container matColumnDef="filter_status">
+                        <th mat-header-cell class="mat-tab-header-txt-col" *matHeaderCellDef>
+                            <input type="text" class="filterInput" placeholder="Filter🔍" [matAutocomplete]="statusAC" />
+                            <mat-autocomplete #statusAC="matAutocomplete" multiple>
+                                <mat-option *ngFor="let street of ['New', 'Approved', 'Draft Sanctioned', 'Sanctioned']" [value]="street">
+                                    {{ street }}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </th>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell mat-sort-header="status" class="mat-tab-header-txt-col" *matHeaderCellDef>Status</th>
+                        <td mat-cell *matCellDef="let element">
+                            <span ngClass="chip-{{ TransStatus[element.status] }}">{{ TransStatus[element.status] | uppercase }}</span>
+                        </td>
+                    </ng-container>
+
+                    <!-- action Column -->
+                    <ng-container matColumnDef="filter_action">
+                        <th mat-header-cell class="mat-tab-header-txt-col" *matHeaderCellDef></th>
+                    </ng-container>
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell class="mat-tab-header-txt-col" *matHeaderCellDef>Action</th>
+                        <td mat-cell *matCellDef="let element">
+                            <span *ngIf="element.status < TransStatus.Sanctioned">
+                                <button mat-icon-button matTooltip="APPROVE" type="button" class="action-Approve" *ngIf="element.status == TransStatus.New"><mat-icon>done</mat-icon></button>
+                                <button mat-icon-button matTooltip="DELETE" type="button" class="action-Delete"><mat-icon>delete_sweep</mat-icon></button>
+                                <button mat-icon-button matTooltip="MODIFY" type="button" class="action-Modify"><mat-icon>edit</mat-icon></button>
+                                <button mat-icon-button matTooltip="SANCTION" type="button" class="action-Sanction" data-bs-toggle="modal" data-bs-target="#sanctionModal" *ngIf="element.status >= TransStatus.Approved"><mat-icon>done_all</mat-icon></button>
+                            </span>
+                            <button mat-icon-button matTooltip="RE-PRINT SANCTION LETTER" type="button" class="action-Sanction" *ngIf="element.status == TransStatus.Sanctioned || element.status == TransStatus.DraftSanctioned"><mat-icon>print</mat-icon></button>
+                        </td>
+                    </ng-container>
+
+                    <!-- selection Column -->
+                    <ng-container matColumnDef="filter_selection">
+                        <th mat-header-cell class="mat-tab-header-txt-col" *matHeaderCellDef></th>
+                    </ng-container>
+                    <ng-container matColumnDef="selection">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">
+                            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="clickedRows.size > 0 && isAllSelected()" [indeterminate]="clickedRows.size > 0 && !isAllSelected()"> </mat-checkbox>
+                            <!-- https://stackblitz.com/angular/lrpjroljdly?embed=1&file=app/table-selection-example.html -->
+                        </th>
+                        <td mat-cell *matCellDef="let row" class="text-center">
+                            <mat-checkbox (click)="rowClicked($event)" (change)="$event ? tickRow($event, row) : null" [checked]="clickedRows.has(row)"> </mat-checkbox>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row class="col" *matHeaderRowDef="displayedColumnsFilter; sticky: true"></tr>
+                    <tr mat-header-row class="col" *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row [class.demo-row-is-clicked]="clickedRows.has(row)" ngClass="TransRow-{{ TransStatus[row.status] }}" *matRowDef="let row; columns: displayedColumns"></tr>
+
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4">No data found.</td>
+                    </tr>
+                </table>
+                <div class="d-flex justify-content-between">
+                    <p class="pt-3" style="font-size: small">{{ clickedRows.size > 0 ? clickedRows.size + " allotment(s) selected." : "" }}</p>
+                    <mat-paginator showFirstLastButtons [pageSizeOptions]="[10, 25, 50, 100, 200]" aria-label="Select page of users"> </mat-paginator>
+                </div>
+            </div>
+        </div>
+
+        <!-- Body : End -->
+    </div>
+</div>
+
+<!-- Sanction Modal : start-->
+<form [formGroup]="memoForm">
+    <div class="modal fade" id="sanctionModal" tabindex="-1" aria-labelledby="sanctionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-title" id="sanctionModalLabel"><i class="fas fa-envelope"></i> Sanction Letter</span>
+                    <button mat-icon-button type="button" color="warn" data-bs-dismiss="modal" aria-label="Close"><mat-icon>close</mat-icon></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <input matInput type="text" placeholder="" formControlName="memoNo" />
+                                <mat-label>Memo Number *</mat-label>
+                                <!-- <mat-error><custom-mat-error [control]="memoFormErrorControl.memoNo"></custom-mat-error></mat-error> -->
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field appearance="outline" class="full-width mt-3">
+                                <mat-label>Memo Date</mat-label>
+                                <input formControlName="date" matInput [matDatepicker]="picker3" readonly />
+                                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                <mat-datepicker #picker3></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                        <mat-form-field appearance="outline" class="full-width" data-is-sanctionedclicked-condition>
+                            <input matInput type="text" placeholder="" formControlName="nameOfProject" />
+                            <mat-label>Name Of Scheme/Project</mat-label>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="full-width" data-is-sanctionedclicked-condition>
+                            <input matInput type="text" placeholder="" formControlName="puprposeOfSanction" />
+                            <mat-label>Purpose of Sanction</mat-label>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="full-width" data-is-sanctionedclicked-condition>
+                            <input matInput type="text" placeholder="" formControlName="administrativeOrderNo" />
+                            <mat-label>Administrative Order Number</mat-label>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="full-width" data-is-sanctionedclicked-condition>
+                            <mat-label>Administrative Order Date</mat-label>
+                            <input formControlName="administrativeOrderDate" matInput [matDatepicker]="picker4" />
+                            <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                            <mat-datepicker #picker4></mat-datepicker>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="full-width" data-is-sanctionedclicked-condition>
+                            <input matInput type="number" placeholder="" formControlName="adminApprovalAmt" />
+                            <mat-label>Admin Approval Amount</mat-label>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="full-width" data-is-sanctionedclicked-condition>
+                            <input matInput type="text" placeholder="" formControlName="authority" />
+                            <mat-label>Authority</mat-label>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="full-width" data-is-sanctionedclicked-condition>
+                            <input matInput type="number" placeholder="" formControlName="totalFundSanction" />
+                            <mat-label>Total Fund Sanctioned Till Date</mat-label>
+                        </mat-form-field>
+
+                        <div class="d-flex mb-3" data-is-sanctionedclicked-condition>
+                            <span>UC Required : &nbsp;</span>
+                            <mat-radio-group aria-label="Select an option" formControlName="ucType">
+                                <mat-radio-button value="yes">Yes &nbsp;</mat-radio-button>
+                                <mat-radio-button value="no" [checked]="true">No &nbsp; </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
+                        <mat-form-field appearance="outline" class="full-width" data-is-sanctionedclicked-condition>
+                            <input matInput type="text" placeholder="" formControlName="fdGroup" />
+                            <mat-label>FD Group</mat-label>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="full-width">
+                            <textarea matInput type="text" placeholder="" formControlName="remarks" class="box"></textarea>
+                            <mat-label>Remarks</mat-label>
+                            <!-- <mat-error><custom-mat-error [control]="memoFormErrorControl.remarks"></custom-mat-error></mat-error> -->
+                        </mat-form-field>
+
+                        <p>(Maximum characters: 500)</p>
+
+                        <p class="text-danger">Remarks cannot exceed 500 characters.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button mat-raised-button color="accent" type="button" data-bs-dismiss="modal">Close</button>
+                    <button mat-raised-button color="primary" type="button" class="mx-2">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- Sanction Modal : end-->

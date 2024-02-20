@@ -1,0 +1,390 @@
+<div class="container-fluid">
+    <secondBar>{{ formTitle }}</secondBar>
+</div>
+
+<form [formGroup]="reAppropriationForm">
+    <div class="formDesign p-3 m-3">
+        <div class="row">
+            <div class="col-4">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Financial Year</mat-label>
+                    <input matInput type="input" formControlName="financialYear" placeholder="Financial Year" />
+                </mat-form-field>
+            </div>
+            <div class="col-4">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Department</mat-label>
+                    <input matInput type="input" formControlName="department" placeholder="Department" />
+                </mat-form-field>
+            </div>
+
+            <div class="col-4">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Approving Authority</mat-label>
+                    <input matInput type="input" formControlName="approvingAuthority" placeholder="Approving Authority" />
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>File Number</mat-label>
+                    <input matInput type="input" formControlName="fileNumber" placeholder="File Number" />
+                </mat-form-field>
+            </div>
+            <div class="col-4">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>UO Number</mat-label>
+                    <input matInput type="input" formControlName="uoNumber" placeholder="UO Number" />
+                </mat-form-field>
+            </div>
+            <div class="col-4">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Choose a date</mat-label>
+                    <input formControlName="date" matInput [matDatepicker]="picker" placeholder="Choose a date(MM/DD/YYYY)" />
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Deduct Amount</mat-label>
+                    <input matInput type="input" formControlName="deductAmount" placeholder="Deduct Amount" />
+                    <mat-error>
+                        <custom-mat-error [control]="reAppropriationForm.controls.deductAmount"></custom-mat-error>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-4">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Reappropriate Amount</mat-label>
+                    <input matInput type="input" formControlName="reappropriateAmount" placeholder="Reappropriate Amount" />
+                    <mat-error>
+                        <custom-mat-error [control]="reAppropriationForm.controls.reappropriateAmount"></custom-mat-error>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-4">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>ID</mat-label>
+                    <input matInput type="input" formControlName="id" placeholder="ID" />
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid mb-3">
+        <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false">
+            <mat-expansion-panel [hideToggle]="false" [expanded]="accordionStep === 0" (opened)="setAccordionStep(0)" class="formDesign mt-3">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Reappropriation From
+                        <span class="badge bg-secondary mx-2" *ngIf="fromHoaCount">{{ fromHoaCount }} SELECTED</span>
+                        <span *ngIf="fromHoaCount">:</span>
+                        <span class="badge bg-secondary mx-2" *ngFor="let item of fromFormArray.value">{{ item.hoa }}</span>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div style="padding: 12px 0 12px 0">
+                    <span><strong>Reappropriation From Details :</strong></span>
+                </div>
+
+                <table class="table">
+                    <tr>
+                        <th style="width: 10%; text-align: center">Clear</th>
+                        <th style="width: 18%; text-align: center">HOA</th>
+                        <th style="width: 18%; text-align: center">Budget</th>
+                        <th style="width: 18%; text-align: center">Current Balanace</th>
+                        <th style="width: 18%; text-align: center">Deduct Amount</th>
+                        <th style="width: 18%; text-align: center">Revised Balance</th>
+                    </tr>
+                    <ng-container [formGroup]="reAppropriationForm">
+                        <ng-container formArrayName="fromFormArrayC">
+                            <ng-container *ngFor="let from of fromFormArray.controls; let i = index">
+                                <tr [formGroupName]="i">
+                                    <td class="text-center">
+                                        <button mat-mini-fab color="primary" class="p-0" (click)="deletefromController(i)"><mat-icon>clear</mat-icon></button>
+                                    </td>
+                                    <td>
+                                        <mat-form-field appearance="outline" class="full-width">
+                                            <input matInput type="input" formControlName="hoa" placeholder="" [matAutocomplete]="hoa" />
+                                            <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                                            <mat-label>Head of Account</mat-label>
+                                            <mat-autocomplete #hoa="matAutocomplete">
+                                                <mat-option class="ctm-auto-ddl" *ngFor="let hoa of fromReAppropriateData" (onSelectionChange)="onHoaSelect($event, hoa, i)" [value]="hoa.demandNo + '-' + hoa.majorHead + '-' + hoa.submajorHead + '-' + hoa.minorHead + '-' + hoa.schemeHead + '-' + hoa.detailHead + '-' + hoa.subdetailHead + '-' + hoa.planStatus + '-' + hoa.votedCharged"> {{ hoa.demandNo + "-" + hoa.majorHead + "-" + hoa.submajorHead + "-" + hoa.minorHead + "-" + hoa.schemeHead + "-" + hoa.detailHead + "-" + hoa.subdetailHead + "-" + hoa.planStatus + "-" + hoa.votedCharged }} </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <mat-form-field appearance="outline" class="full-width">
+                                            <mat-label>Budget</mat-label>
+                                            <input matInput type="input" formControlName="budget" placeholder="" readonly />
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <mat-form-field appearance="outline" class="full-width">
+                                            <mat-label>Current Balance</mat-label>
+                                            <input matInput type="number" formControlName="currentBalance" placeholder="" readonly />
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <mat-form-field appearance="outline" class="full-width">
+                                            <mat-label>Deduct Amount</mat-label>
+                                            <input matInput type="number" formControlName="deductAmount" placeholder="" (focusout)="validateDeductionAmt(from, i)" />
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <mat-form-field appearance="outline" class="full-width">
+                                            <mat-label>Revised Balance</mat-label>
+                                            <input matInput type="input" formControlName="revisedBalance" placeholder="" readonly />
+                                        </mat-form-field>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <tr>
+                                <td colspan="4">
+                                    <span class="float-end"><strong>Total Deduct Amount :</strong></span>
+                                </td>
+                                <td colspan="2">
+                                    <span
+                                        ><strong>{{ totalDeductAmount }}</strong></span
+                                    >
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                </table>
+                <div class="row">
+                    <div class="col"><button mat-raised-button color="primary" class="mx-2" (click)="addfromController()">Add</button></div>
+                </div>
+                <div>
+                    <section>
+                        <div class="text-center">
+                            <button mat-raised-button color="primary" class="mx-2" (click)="fromDetailsSaveNext()">Save & Next</button>
+                            <button mat-raised-button color="primary" class="mx-2">Refresh</button>
+                        </div>
+                    </section>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [hideToggle]="false" [expanded]="accordionStep === 1" (opened)="setAccordionStep(1)" class="formDesign">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Reappropriation To
+                        <span class="badge bg-secondary mx-2" *ngIf="toHoaCount">{{ toHoaCount }} SELECTED</span>
+                        <span *ngIf="toHoaCount">:</span>
+                        <span class="badge bg-secondary mx-2" *ngFor="let item of toFormArray.value">{{ item.hoa }}</span>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div *ngIf="isFromSaveClicked">
+                    <div style="padding: 12px 0 12px 0">
+                        <strong><span>Reappropriation To Details :</span></strong>
+                    </div>
+
+                    <table class="table">
+                        <tr>
+                            <th style="width: 10%; text-align: center">Clear</th>
+                            <th style="width: 18%; text-align: center">HOA</th>
+                            <th style="width: 18%; text-align: center">Budget</th>
+                            <th style="width: 18%; text-align: center">Current Balanace</th>
+                            <th style="width: 18%; text-align: center">Re-Appropriation Amount</th>
+                            <th style="width: 18%; text-align: center">Revised Budget</th>
+                        </tr>
+                        <ng-container [formGroup]="reAppropriationForm">
+                            <ng-container formArrayName="toFormArrayC">
+                                <ng-container *ngFor="let to of toFormArray.controls; let i = index">
+                                    <tr [formGroupName]="i">
+                                        <td class="text-center">
+                                            <button mat-mini-fab color="primary" class="p-0" (click)="deletetoController(i)"><mat-icon>clear</mat-icon></button>
+                                        </td>
+                                        <td>
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <input matInput type="input" formControlName="hoa" placeholder="" [matAutocomplete]="hoa" />
+                                                <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                                                <mat-label>Head of Account</mat-label>
+                                                <mat-autocomplete #hoa="matAutocomplete">
+                                                    <mat-option class="ctm-auto-ddl" *ngFor="let hoa of toReAppropriateData" (onSelectionChange)="onToHoaSelect($event, hoa, i)" [value]="hoa.demandNo + '-' + hoa.majorHead + '-' + hoa.submajorHead + '-' + hoa.minorHead + '-' + hoa.schemeHead + '-' + hoa.detailHead + '-' + hoa.subdetailHead + '-' + hoa.planStatus + '-' + hoa.votedCharged"> {{ hoa.demandNo + "-" + hoa.majorHead + "-" + hoa.submajorHead + "-" + hoa.minorHead + "-" + hoa.schemeHead + "-" + hoa.detailHead + "-" + hoa.subdetailHead + "-" + hoa.planStatus + "-" + hoa.votedCharged }} :: {{ hoa.ceilingAmount - hoa.provisionalReleasedAmount }} </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Budget</mat-label>
+                                                <input matInput type="input" formControlName="budget" placeholder="" readonly />
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Current Balance</mat-label>
+                                                <input matInput type="input" formControlName="currentBalance" placeholder="" readonly />
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Re-Appropriation Amount</mat-label>
+                                                <input matInput type="number" formControlName="reAppropriationAmount" placeholder="" (focusout)="validateReAppropriateAmt(to, i)" />
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Revised Balance</mat-label>
+                                                <input matInput type="input" formControlName="revisedBalance" placeholder="" readonly />
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+
+                                <tr>
+                                    <td colspan="4">
+                                        <span class="float-end"><strong>Total Re-Appropriation Amount :</strong></span>
+                                    </td>
+                                    <td colspan="2">
+                                        <span class="pl-3"
+                                            ><strong>{{ totalReAppropriatedAmount }}</strong></span
+                                        >
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+                    </table>
+                    <div class="row">
+                        <div class="col"><button mat-raised-button color="primary" class="mx-2" (click)="addtoController()">Add</button></div>
+                    </div>
+                    <div>
+                        <section>
+                            <div class="text-center">
+                                <button mat-raised-button color="primary" class="mx-2" (click)="prevAccordionStep()">Previous</button>
+                                <button mat-raised-button color="primary" class="mx-2" (click)="toSaveNext()">Save & Next</button>
+                                <button mat-raised-button color="primary" class="mx-2">Refresh</button>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [hideToggle]="false" [expanded]="accordionStep === 2" (opened)="setAccordionStep(2)" class="formDesign">
+                <mat-expansion-panel-header>Notes/Remarks</mat-expansion-panel-header>
+
+                <div *ngIf="isToSaveClicked">
+                    <div class="d-flex justify-content-between">
+                        <div class="col-6" style="width: 49% !important">
+                            <strong><span>Reappropriation From Details :</span></strong>
+                            <table class="table mt-2">
+                                <tr>
+                                    <th class="text-center">HOA</th>
+                                    <th class="text-center">Budget</th>
+                                    <th class="text-center">Current Balanace</th>
+                                    <th class="text-center">Deduct Amount</th>
+                                    <th class="text-center">Revised Balance</th>
+                                </tr>
+                                <tr *ngFor="let hoa of fromFormArray.getRawValue(); let i = index" style="height: 40px; text-align: center">
+                                    <td>
+                                        {{ hoa.hoa }}
+                                    </td>
+                                    <td>
+                                        {{ hoa.budget }}
+                                    </td>
+                                    <td>
+                                        {{ hoa.currentBalance }}
+                                    </td>
+                                    <td>
+                                        {{ hoa.deductAmount }}
+                                    </td>
+                                    <td>
+                                        {{ hoa.revisedBalance }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-6" style="width: 49% !important">
+                            <strong><span>Reappropriation To Details :</span></strong>
+                            <table class="table mt-2">
+                                <tr>
+                                    <th class="text-center">HOA</th>
+                                    <th class="text-center">Budget</th>
+                                    <th class="text-center">Current Balanace</th>
+                                    <th class="text-center">Re-Appropriated Amount</th>
+                                    <th class="text-center">Revised Budget</th>
+                                </tr>
+                                <tr *ngFor="let hoa of toFormArray.getRawValue(); let i = index" style="height: 40px; text-align: center">
+                                    <td>
+                                        {{ hoa.hoa }}
+                                    </td>
+
+                                    <td>
+                                        {{ hoa.budget }}
+                                    </td>
+
+                                    <td>
+                                        {{ hoa.currentBalance }}
+                                    </td>
+
+                                    <td>
+                                        {{ hoa.reAppropriationAmount }}
+                                    </td>
+
+                                    <td>
+                                        {{ hoa.revisedBalance }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="border border-success p-2 mb-2">
+                        <div class="row d-flex justify-content-center">
+                            <div style="max-width: 50%">
+                                Remarks:
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <textarea matInput type="input" formControlName="remarks" placeholder="" class="box"></textarea>
+                                </mat-form-field>
+                                <mat-checkbox id="btncheck1" class="example-margin" [checked]="false">I agree with all terms and conditions.</mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <section>
+                            <div class="text-center">
+                                <button mat-raised-button color="primary" class="mx-2" (click)="prevAccordionStep()">Previous</button>
+                                <button mat-raised-button color="primary" class="mx-2" (click)="submitReAppropriation()">Save & Next</button>
+                                <button mat-raised-button color="primary" class="mx-2">Refresh</button>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [hideToggle]="false" [expanded]="accordionStep === 3" (opened)="setAccordionStep(3)" class="formDesign">
+                <mat-expansion-panel-header>Self Certification</mat-expansion-panel-header>
+
+                <table class="table" style="width: 100%">
+                    <tr>
+                        <td style="text-align: center">1</td>
+                        <td>
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label></mat-label>
+                                <input matInput type="input" formControlName="selfCertification" placeholder="" readonly />
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </table>
+                <br />
+                <div>
+                    <section>
+                        <div class="text-center">
+                            <button mat-raised-button color="primary" class="mx-2" (click)="prevAccordionStep()">Previous</button>
+                            <button mat-raised-button color="primary" class="mx-2">Generate Report</button>
+                            <button mat-raised-button color="primary" class="mx-2">Refresh</button>
+                        </div>
+                    </section>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</form>

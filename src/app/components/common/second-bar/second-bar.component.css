@@ -1,0 +1,10 @@
+.heading {
+    background-color: var(--second_bar_bg);
+    padding: 10px;
+}
+
+.txt {
+    padding: 10px;
+    font-size: 15px;
+    font-weight: 400;
+}

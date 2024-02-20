@@ -1,0 +1,129 @@
+.chip {
+    border: 1px dashed #4e4e4e;
+    // border-radius: 5px;
+    // font-size: xx-small;
+    // padding: 1px;
+    background-color: #0087b884;
+    color: #005371 !important;
+}
+
+.xTransRow {
+    border-style: solid;
+    border-width: 0px 2px;
+}
+.xTransRow-Sanctioned {
+    border-style: solid;
+    border-width: 0px 2px;
+    background-color: rgba(0, 128, 0, 0.189);
+    border-color: green !important;
+}
+.xTransRow-New {
+    border-style: solid;
+    border-width: 0px 2px;
+    background-color: rgba(0, 118, 222, 0.189);
+    border-color: rgba(0, 75, 128, 0.759) !important;
+}
+.xTransRow-Approved {
+    border-style: solid;
+    border-width: 0px 2px;
+    background-color: rgba(255, 230, 6, 0.189);
+    border-color: rgba(191, 134, 0, 0.759) !important;
+}
+.xTransRow-Deleted {
+    border-style: solid;
+    border-width: 0px 2px;
+    background-color: rgba(255, 6, 6, 0.189);
+    border-color: rgba(191, 0, 0, 0.759) !important;
+}
+.chip-Sanctioned {
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    font-size: xx-small;
+    padding: 4px;
+    background-color: rgba(0, 128, 0, 0.189);
+    border-color: green;
+    color: green;
+    font-weight: bolder;
+}
+.chip-DraftSanctioned {
+    border-style: dashed;
+    border-width: 2px;
+    border-radius: 5px;
+    font-size: xx-small;
+    padding: 4px;
+    background-color: rgba(0, 128, 0, 0.189);
+    border-color: green;
+    color: green;
+    font-weight: bolder;
+}
+.chip-New {
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    font-size: xx-small;
+    padding: 4px;
+    background-color: rgba(0, 118, 222, 0.189);
+    border-color: rgba(0, 75, 128, 0.759);
+    color: rgba(0, 75, 128, 0.759);
+    font-weight: bolder;
+}
+.chip-Approved {
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    font-size: xx-small;
+    padding: 4px;
+    background-color: rgba(255, 230, 6, 0.189);
+    border-color: rgba(191, 134, 0, 0.759);
+    color: rgba(191, 134, 0, 0.759);
+    font-weight: bolder;
+}
+.chip-Deleted {
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    font-size: xx-small;
+    padding: 4px;
+    background-color: rgba(255, 6, 6, 0.189);
+    border-color: rgba(191, 0, 0, 0.759);
+    color: rgba(191, 0, 0, 0.759);
+    font-weight: bolder;
+}
+.action-Approve {
+    color: rgba(191, 134, 0, 0.759) !important;
+}
+.action-Delete {
+    color: rgba(191, 0, 0, 0.759) !important;
+}
+.action-Modify {
+    color: rgba(191, 134, 0, 0.759) !important;
+}
+.action-Sanction {
+    color: green !important;
+}
+td.mat-cell:hover:not(.mat-table thead) {
+    background-color: #00e1ff1a;
+}
+// tr:hover:not(.mat-table tr){
+//     background-color: #00e1ff1a;
+// }
+.mat-sort-header-content {
+    border: 1px solid red !important;
+    background-color: red !important;
+}
+.filterInput {
+    width: 95%;
+}
+.filterInput:focus-within,
+.filterInput:focus-visible {
+    outline: #00bbff 1px solid;
+    // border-radius: 2px;
+    // border-width: 1px;
+    // border-color: transparent;
+}
+
+td:last-child,
+th:last-child {
+    padding-left: 9px !important;
+}

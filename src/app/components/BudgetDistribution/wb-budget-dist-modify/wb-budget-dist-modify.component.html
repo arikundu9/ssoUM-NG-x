@@ -1,0 +1,226 @@
+<div class="mainRoute">
+    <div class="container-fluid">
+
+        <secondBar>Budget Modify</secondBar>
+
+        <mat-accordion [hideToggle]="false">
+
+            <mat-expansion-panel [hideToggle]="false" [expanded]="accordionStep === 0" (opened)="setAccordionStep(0)"
+                class="formDesign mt-3">
+                <mat-expansion-panel-header>
+                    <mat-panel-title><strong>Search Criteria</strong></mat-panel-title>
+                </mat-expansion-panel-header>
+                <app-hoa-details (onEnteringHoaDetails)="filterHOA($event)"></app-hoa-details>
+                <!-- <mat-action-row>
+                    <button mat-raised-button color="primary" (click)="onHoaSearch()">Search</button>
+                </mat-action-row> -->
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [hideToggle]="false" [expanded]="accordionStep === 1" (opened)="setAccordionStep(1)"
+                class="formDesign">
+                <mat-expansion-panel-header>
+                    <mat-panel-title><strong>Available Head of Accounts</strong></mat-panel-title>
+                </mat-expansion-panel-header>
+                <!-- Available Head of Accounts Table -->
+                <div class="row pt-0 pb-0">
+                    <div class="col-12">
+                        <div class="xformDesign">
+                            <table mat-table matSort [dataSource]="copyAllotSource"
+                                class="mt-2 mat-elevation-z0 xformDesign full-width">
+
+                                <ng-container matColumnDef="allotmentid">
+                                    <th mat-header-cell mat-sort-header="allotmentid" class="mat-tab-header-txt-col"
+                                        *matHeaderCellDef>Allotment ID</th>
+                                    <td mat-cell *matCellDef="let element">{{ element.allotmentId }}
+                                    </td>
+                                </ng-container>
+
+                                <!-- aDate Column -->
+                                <ng-container matColumnDef="allotmentdate">
+                                    <th mat-header-cell mat-sort-header="allotmentdate" class="mat-tab-header-txt-col"
+                                        *matHeaderCellDef>Allotment Date</th>
+                                    <td mat-cell *matCellDef="let element">{{ element.createdAt | date : 'yyyy-MM-dd' }}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="receiverCode">
+                                    <th mat-header-cell mat-sort-header="receiverCode" class="mat-tab-header-txt-col"
+                                        *matHeaderCellDef>Receiver Code</th>
+                                    <td mat-cell *matCellDef="let element">{{ element.receiverSaoDdoCode }}</td>
+                                </ng-container>
+
+                                <!-- hoa Column -->
+                                <ng-container matColumnDef="hoa">
+                                    <th mat-header-cell mat-sort-header="hoa" class="mat-tab-header-txt-col"
+                                        *matHeaderCellDef>
+                                        Head
+                                        of Account</th>
+                                    <td mat-cell *matCellDef="let element">{{
+                                        element.demandNo+'-'+element.majorHead+'-'+element.submajorHead+'-'+element.minorHead+'-'+element.schemeHead+'-'+element.detailHead+'-'+element.subdetailHead+'-'+element.votedCharged
+                                        }}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="balanceCeilamount">
+                                    <th mat-header-cell mat-sort-header="balanceceilamount" class="mat-tab-header-txt-col" *matHeaderCellDef>₹ Balance Ceilling Amount</th>
+                                    <td mat-cell *matCellDef="let element">{{ element.ceilingAmount - element.provisionalReleasedAmount | number : "1.0-0" }}</td>
+                                </ng-container>
+
+                                <!-- balance Column -->
+                                <ng-container matColumnDef="allotedAmount">
+                                    <th mat-header-cell mat-sort-header="balanceamount" class="mat-tab-header-txt-col"
+                                        *matHeaderCellDef>₹ Alloted Amount</th>
+                                    <td mat-cell *matCellDef="let element">{{ element.budgetAllotedAmount |
+                                        number:'1.0-0' }}</td>
+                                </ng-container>
+
+                                <!-- selection Column -->
+                                <ng-container matColumnDef="selection">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                                            [checked]="clickedRows.size > 0 && isAllSelected()"
+                                            [indeterminate]="clickedRows.size > 0 && !isAllSelected()">
+                                        </mat-checkbox>
+                                        <!-- https://stackblitz.com/angular/lrpjroljdly?embed=1&file=app/table-selection-example.html -->
+                                    </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        <mat-checkbox (click)="$event.stopPropagation()"
+                                            (change)="$event ? tickRow($event,row) : null"
+                                            [checked]="clickedRows.has(row)">
+                                        </mat-checkbox>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row class="col" *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row [class.demo-row-is-clicked]="clickedRows.has(row)"
+                                    *matRowDef="let row; columns: displayedColumns"></tr>
+
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" colspan="4">No data matching the filter</td>
+                                </tr>
+
+                            </table>
+                            <div class="d-flex justify-content-between">
+                                <p class="pt-4">{{ clickedRows.size }} items selected.</p>
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users">
+                                </mat-paginator>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <mat-action-row>
+                    <button mat-raised-button color="warn" (click)="goForDelete()">Delete</button>
+                    <button mat-raised-button color="primary" (click)="selectForModify()">Modify</button>
+                    <button *ngIf="user.Roles[0].Name == 'Approver'" mat-raised-button color="accent" (click)="sendForRevision()">Send For Revision</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [hideToggle]="false" [expanded]="accordionStep === 2" (opened)="setAccordionStep(2)"
+                class="formDesign" *ngIf="isModifyCilcked">
+                <mat-expansion-panel-header>
+                    <mat-panel-title><strong>Modify Allotments</strong></mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="xformDesign mt-3">
+                    <div class="row">
+                        <div>
+                            <table class="table table-striped table-bordered">
+
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center;">Allotment Date</th>
+                                        <th style="text-align: center;">Allotment ID</th>
+                                        <th style="text-align: center;">Receiver Code</th>
+                                        <th style="text-align: center;">Head of Account</th>
+                                        <th style="text-align: center;">₹Alloted Amount</th>
+                                        <th style="text-align: center;">₹Ceilling Amount</th>
+                                        <th style="text-align: center;">₹Change Amount</th>
+                                        <th style="text-align: center;">Clear Row</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <ng-container [formGroup]="modifyForm">
+                                        <ng-container formArrayName="modifyFormArray">
+                                            <ng-container
+                                                *ngFor="let modifyFormStruct of modifyFormArray.controls; let i = index">
+                                                <tr [formGroupName]="i">
+
+                                                    <td style="text-align: center">
+                                                        <div class="mt-4">
+                                                            {{this.clickedRowsArray[i].createdAt | date : "yyyy-MM-dd"}}
+                                                        </div>
+                                                    </td>
+
+                                                    <td style="text-align: center">
+                                                        <div class="mt-4">
+                                                            {{this.clickedRowsArray[i].allotmentId}}
+                                                        </div>
+                                                    </td>
+
+                                                    <td style="text-align: center">
+                                                        <div class="mt-4">
+                                                            {{this.clickedRowsArray[i].receiverSaoDdoCode}}
+                                                        </div>
+                                                    </td>
+
+                                                    <td style="text-align: center">
+                                                        <div class="mt-4">
+                                                            {{ clickedRowsArray[i].demandNo+'-'+clickedRowsArray[i].majorHead+'-'+clickedRowsArray[i].submajorHead+'-'+clickedRowsArray[i].minorHead+'-'+clickedRowsArray[i].schemeHead+'-'+clickedRowsArray[i].detailHead+'-'+clickedRowsArray[i].subdetailHead+'-'+clickedRowsArray[i].votedCharged }}
+                                                        </div>
+                                                    </td>
+
+                                                    <td style="text-align: center">
+                                                        <div class="mt-4">
+                                                            {{this.clickedRowsArray[i].budgetAllotedAmount}}
+                                                        </div>
+                                                    </td>
+
+                                                    <td style="text-align: center">
+                                                        <div class="mt-4">
+                                                            {{clickedRowsArray[i].ceilingAmount - clickedRowsArray[i].provisionalReleasedAmount | number : "1.0-0"}}
+                                                        </div>
+                                                    </td>
+
+                                                    <td style="text-align: center">
+                                                        <mat-form-field class="full-width" appearance="outline">
+                                                            <mat-label>Change Amount</mat-label>
+                                                            <input matInput type="number" formControlName="balance" required (focusout)="verifyChangableAmount(modifyFormArray.controls); showError(modifyFormStruct,clickedRowsArray[i].ceilingAmount,clickedRowsArray[i].provisionalReleasedAmount)"/>
+                                                        </mat-form-field>
+                                                        <mat-error>
+                                                            <custom-mat-error [control]="modifyFormArray_as_FormGroup(i).controls.balance"></custom-mat-error>
+                                                        </mat-error>
+                                                    </td>
+
+                                                    <td style="text-align: center;">
+                                                        <button class="mt-2" mat-mini-fab color="primary"
+                                                            (click)="deleteModifyFormController(i)"><mat-icon>clear</mat-icon>
+                                                        </button>
+                                                    </td>
+
+                                                </tr>
+
+                                            </ng-container>
+                                            <tr>
+                                                <td colspan="8"><strong>Total Amount :- {{ grandTotal }}</strong></td>
+                                            </tr>
+                                        </ng-container>
+                                    </ng-container>
+                                </tbody>
+
+                            </table>
+
+                            <div class="col-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <mat-action-row>
+                    <button mat-raised-button color="primary" (click)="modify()">Save</button>
+                </mat-action-row>
+
+            </mat-expansion-panel>
+
+        </mat-accordion>
+
+    </div>
+</div>

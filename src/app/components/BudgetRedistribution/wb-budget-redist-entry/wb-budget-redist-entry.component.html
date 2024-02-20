@@ -1,0 +1,170 @@
+<div class="mainRoute">
+    <div class="container-fluid">
+        <secondBar>Budget Redistribution Entry</secondBar>
+
+        <div class="formDesign py-3 mt-3">
+            <div class="row">
+                <form [formGroup]="reDistributionForm">
+                    <div class="col-6 text-center">
+                        <p>
+                            <strong><span>Select Allotment Type for distribution : </span></strong>
+                        </p>
+                        <mat-radio-group aria-label="Select an option" formControlName="allotmentType">
+                            <mat-radio-button value="1" [checked]="true">Allotment &nbsp; &nbsp;</mat-radio-button>
+                            <mat-radio-button value="2">Sanction &nbsp;&nbsp;</mat-radio-button>
+                            <mat-radio-button value="3">Grant-in-Aid</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <mat-accordion [hideToggle]="false">
+            <mat-expansion-panel [hideToggle]="false" [expanded]="accordionStep === 0" (opened)="setAccordionStep(0)" class="formDesign mt-3">
+                <mat-expansion-panel-header>
+                    <mat-panel-title><strong>Search Criteria</strong></mat-panel-title>
+                </mat-expansion-panel-header>
+                <form [formGroup]="reDistributionForm">
+                    <div class="row">
+                        <div class="col-6">
+                            <mat-form-field class="full-width" appearance="outline">
+                                <input matInput type="text" placeholder="Select a Scheme Type" [matAutocomplete]="schemetype" formControlName="schemeType" />
+                                <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                                <mat-label>Scheme Type</mat-label>
+                                <mat-autocomplete #schemetype="matAutocomplete">
+                                    <mat-option class="ctm-auto-ddl" *ngFor="let department of departmentList" [title]="department" [value]="department"> {{ department }} </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field class="full-width" appearance="outline">
+                                <input matInput type="text" placeholder="Select an Allotment ID" [matAutocomplete]="allotmentid" formControlName="allotmentId" />
+                                <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                                <mat-label>Allotment ID</mat-label>
+                                <mat-autocomplete #allotmentid="matAutocomplete">
+                                    <mat-option class="ctm-auto-ddl" *ngFor="let department of departmentList" [title]="department" [value]="department"> {{ department }} </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
+                <app-hoa-details (onEnteringHoaDetails)="filterHOA($event)"></app-hoa-details>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [hideToggle]="false" [expanded]="accordionStep === 1" (opened)="setAccordionStep(1)" class="formDesign">
+                <mat-expansion-panel-header>
+                    <mat-panel-title><strong>Available Head of Accounts</strong></mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="row pt-0 pb-0">
+                    <div class="col-12">
+                        <div class="xformDesign">
+                            <table mat-table matSort [dataSource]="copyAllotSource" class="mt-2 mat-elevation-z0 xformDesign full-width">
+                                <ng-container matColumnDef="allotmentid">
+                                    <th mat-header-cell mat-sort-header="allotmentid" class="mat-tab-header-txt-col" *matHeaderCellDef>Allotment ID</th>
+                                    <td mat-cell *matCellDef="let element">{{ element.allotmentId }}</td>
+                                </ng-container>
+
+                                <!-- aDate Column -->
+                                <ng-container matColumnDef="allotmentdate">
+                                    <th mat-header-cell mat-sort-header="allotmentdate" class="mat-tab-header-txt-col" *matHeaderCellDef>Allotment Date</th>
+                                    <td mat-cell *matCellDef="let element">{{ element.createdAt | date : "yyyy-MM-dd" }}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="saoDdo">
+                                    <th mat-header-cell mat-sort-header="saoDdo" class="mat-tab-header-txt-col" *matHeaderCellDef>Sub Alloting Officer/DDO</th>
+                                    <td mat-cell *matCellDef="let element">{{ element.receiverSaoDdoCode }}</td>
+                                </ng-container>
+
+                                <!-- hoa Column -->
+                                <ng-container matColumnDef="hoa">
+                                    <th mat-header-cell mat-sort-header="hoa" class="mat-tab-header-txt-col" *matHeaderCellDef>Head of Account</th>
+                                    <td mat-cell *matCellDef="let element">{{ element.demandNo + "-" + element.majorHead + "-" + element.submajorHead + "-" + element.minorHead + "-" + element.schemeHead + "-" + element.detailHead + "-" + element.subdetailHead + "-" + element.votedCharged }}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="balanceCeilamount">
+                                    <th mat-header-cell mat-sort-header="balanceceilamount" class="mat-tab-header-txt-col" *matHeaderCellDef>₹ Balance Ceilling Amount</th>
+                                    <td mat-cell *matCellDef="let element">{{ element.ceilingAmount - element.provisionalReleasedAmount | number : "1.0-0" }}</td>
+                                </ng-container>
+
+                                <!-- balance Column -->
+                                <ng-container matColumnDef="allotedAmount">
+                                    <th mat-header-cell mat-sort-header="balanceamount" class="mat-tab-header-txt-col" *matHeaderCellDef>₹ Alloted Amount</th>
+                                    <td mat-cell *matCellDef="let element">{{ element.budgetAllotedAmount | number : "1.0-0" }}</td>
+                                </ng-container>
+
+                                <!-- selection Column -->
+                                <ng-container matColumnDef="selection">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <!-- <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="clickedRows.size > 0 && isAllSelected()" [indeterminate]="clickedRows.size > 0 && !isAllSelected()"> </mat-checkbox> -->
+                                        <!-- https://stackblitz.com/angular/lrpjroljdly?embed=1&file=app/table-selection-example.html -->
+                                    </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        <mat-radio-button (click)="$event.stopPropagation()" (change)="$event ? tickRow($event, row) : null" [checked]="clickedRows.has(row)"> </mat-radio-button>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row class="col" *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row [class.demo-row-is-clicked]="clickedRows.has(row)" *matRowDef="let row; columns: displayedColumns"></tr>
+
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" colspan="4">No data matching the filter</td>
+                                </tr>
+                            </table>
+                            <div class="d-flex justify-content-between">
+                                <p class="pt-4">{{ clickedRows.size }} items selected.</p>
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"> </mat-paginator>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <mat-action-row>
+                    <button mat-raised-button color="primary" (click)="onHoaSelect()" *ngIf="clickedRows.size != 0">Next</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [hideToggle]="false" [expanded]="accordionStep === 2" (opened)="setAccordionStep(2)" class="formDesign">
+                <mat-expansion-panel-header>
+                    <mat-panel-title><strong>Receiver Details & Amount Section</strong></mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center">Department Details</th>
+                            <th style="text-align: center">Amount</th>
+                            <th style="text-align: center">Clear Row</th>
+                        </tr>
+                    </thead>
+
+                    <tbody *ngFor="let recverForm of receiverFormArrayHelper.controls; let i = index">
+                        <tr [formGroup]="receiverFormArrayHelper.fromGroupAt(i)">
+                            <td>
+                                <mat-form-field class="full-width" appearance="outline">
+                                    <input matInput type="text" placeholder="Department Details" [matAutocomplete]="deptDetails" formControlName="deptDetails" />
+                                    <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                                    <mat-label>Department Details</mat-label>
+                                    <mat-autocomplete #deptDetails="matAutocomplete" [displayWith]="selectedDepartment">
+                                        <mat-option class="ctm-auto-ddl" *ngFor="let department of departmentList" [title]="department" [value]="department">{{ department.demandCode }} : {{ department.name }} </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-label>Amount </mat-label>
+                                    <input matInput type="number" formControlName="amount" autocomplete="off" />
+                                </mat-form-field>
+                            </td>
+                            <td class="text-center">
+                                <button mat-mini-fab color="primary" class="p-0" (click)="receiverFormArrayHelper.deleteControlAt(i)"><mat-icon>clear</mat-icon></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button mat-raised-button color="primary" (click)="receiverFormArrayHelper.addControl()">Add Row</button>
+                <mat-action-row>
+                    <button mat-raised-button color="primary" (click)="saveRedistribution()" *ngIf="clickedRows.size != 0">Save</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>

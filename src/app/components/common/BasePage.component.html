@@ -1,0 +1,18 @@
+<div class="container-fluid">
+    <secondBar>HHHHHHHHH</secondBar>
+</div>
+<form [formGroup]="baseForm">
+    <div class="container-fluid">
+        <div class="formDesign mt-4">s</div>
+        <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false">
+            <mat-expansion-panel [hideToggle]="false" [expanded]="accordionStep === 0" (opened)="setAccordionStep(0)" class="formDesign mt-5">
+                <mat-expansion-panel-header>pan0</mat-expansion-panel-header>
+                AAA
+            </mat-expansion-panel>
+            <mat-expansion-panel [hideToggle]="false" [expanded]="accordionStep === 1" (opened)="setAccordionStep(1)" class="formDesign">
+                <mat-expansion-panel-header>pan1</mat-expansion-panel-header>
+                AAA
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</form>
