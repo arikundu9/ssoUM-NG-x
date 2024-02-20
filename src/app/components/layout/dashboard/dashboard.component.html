@@ -33,9 +33,7 @@
     </mat-toolbar>
 
     <mat-drawer #drawer class="example-sidenav mat-elevation-z10" mode="side" [opened]="prevSate">
-        <!-- <mat-list> -->
         <sideBar></sideBar>
-        <!-- </mat-list> -->
     </mat-drawer>
     <router-outlet (activate)="onLoadComponent($event)"></router-outlet>
 </mat-drawer-container>
