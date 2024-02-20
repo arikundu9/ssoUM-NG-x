@@ -43,8 +43,8 @@ body {
     --prime_blue: #1368a1;
     --prime_aqua: #13a193;
     --white: #ffffff;
-    --second_bar_bg: #d9d9d9;
-    --home_body_bg: linear-gradient(0deg, #adf6fd7e 0%, #adf7fd 100%);
+    --second_bar_bg: #9bd6fd;
+    --home_body_bg: #dedede;
     --sidebar_bg: linear-gradient(321deg, #0d5d93 0%, #1f9df1 100%);
     --magic: "";
     scrollbar-width: thin !important; /* Sets the width of the entire scrollbar */
@@ -140,10 +140,10 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm:focus {
 
 .formDesign {
     height: auto;
-    background-color: #e1e1e1;
-    border: 0px solid #cccccc !important;
-    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.2), 0px 1px 0px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important;
-    border-radius: 5px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc !important;
+    // box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.2), 0px 1px 0px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important;
+    border-radius: 0px;
 }
 
 body.darkMode {

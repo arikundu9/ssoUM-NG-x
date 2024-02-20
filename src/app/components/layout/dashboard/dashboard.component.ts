@@ -143,10 +143,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.auth.logout();
     }
 
-    reload() {
-        location.reload();
-    }
-
     onLoadComponent(event: any) {
         this.statusBar.text = '';
     }
