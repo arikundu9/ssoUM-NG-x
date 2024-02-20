@@ -14,11 +14,4 @@ export class SideBarComponent implements OnInit {
 
     ngOnInit(): void {
     }
-
-    goToEntry(e: Event) {
-        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigate(['/wbBudgetEntry']);
-        });
-        // window.location.reload();
-    }
 }
