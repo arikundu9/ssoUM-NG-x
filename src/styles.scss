@@ -425,7 +425,6 @@ td.mat-footer-cell:first-of-type {
 }
 
 //----------------------------------------------------------------------------------------------------------
-// CR in [UAT_eBantan_NIC_19022024.docx]: 7)	After saving the entry, alert message should be provided as “Do you want to save”.  There should be “Ok” and “Cancel” button.  Entry screen should be visible when message is pop up.
 .modal-backdrop,
 .swal2-container.swal2-backdrop-show,
 .alertify .ajs-dimmer,
@@ -433,7 +432,7 @@ td.mat-footer-cell:first-of-type {
 .cdk-overlay-dark-backdrop {
     --bs-backdrop-opacity: 1;
     --bs-backdrop-bg: #00000058;
-    backdrop-filter: blur(1px) !important;
+    backdrop-filter: blur(4px) !important;
     background-color: var(--bs-backdrop-bg) !important;
     opacity: 1 !important;
 }

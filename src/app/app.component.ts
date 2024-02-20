@@ -10,7 +10,7 @@ import { localStorageService } from '@S/index';
 })
 export class AppComponent implements OnInit {
     shortcuts: ShortcutInput[] = [];
-    title = 'eB-FE';
+    title = 'ssoUM-NG';
     constructor() {
         if (localStorageService.get('th') == 'dark') document.body.classList.toggle('darkMode');
     }

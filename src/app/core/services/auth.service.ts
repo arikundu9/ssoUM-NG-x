@@ -46,7 +46,7 @@ export class authService {
         localStorageService.del('jt_pl');
         localStorageService.del('jt');
         localStorageService.del('iL');
-        window.open(environment.authUrl, '_self');
+        // window.open(environment.authUrl, '_self');
     }
 
     parseJwt(token: string) {

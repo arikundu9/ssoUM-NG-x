@@ -30,9 +30,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     backDropFlag!: boolean;
 
     constructor(private router: Router, private auth: authService, public statusBar: statusBarService, public dialog: MatDialog, private observer: BreakpointObserver, private cdr: ChangeDetectorRef) {
-        this.user = auth.user;
-        this.parsedToken = this.auth.parsedJwt;
-        localStorageService.set('sidebar_drawer', 'open'); //ebantan NIC UAT dT 15.09.23.pdf  :: Issue 1
+        // this.user = auth.user;
+        // this.parsedToken = this.auth.parsedJwt;
+        // localStorageService.set('sidebar_drawer', 'open');
     }
 
     ngOnInit(): void {
@@ -144,7 +144,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     }
 
     reload() {
-        //ebantan NIC UAT dT 15.09.23.pdf  :: Issue 2
         location.reload();
     }
 
