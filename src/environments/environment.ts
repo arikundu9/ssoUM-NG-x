@@ -4,9 +4,6 @@
 
 export const environment = {
     production: false,
-    iMasterUrl: 'http://localhost:5006/',
-    bantanUrl: 'https://ifmswbuat.nic.in/ebantanapi/',
-    authUrl: 'http://10.176.100.22:4200/',
     version: 'v1',
     AesKey: '8097276631449410',
     AesIV: '7996209429192123',
