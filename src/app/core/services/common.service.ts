@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { throwError, Observable, Subject, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -13,8 +13,8 @@ import { baseNetworkService } from './base.network.service';
 })
 export class CommonService extends baseNetworkService {
 
-    constructor(private http: HttpClient, private auth: authService, private notify: NotificationService, private toastr: ToastrService) {
-        super();
+    constructor(injector: Injector) {
+        super(injector);
     }
     override get version(): string {
         return 'v1';
