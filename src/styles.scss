@@ -41,7 +41,7 @@ body {
 
 :root {
     --prime_blue: #1368a1;
-    --prime_aqua: #13a193;
+    --prime_aqua: #b0ba29;
     --white: #ffffff;
     --second_bar_bg: #9bd6fd;
     --home_body_bg: #dedede;
@@ -373,7 +373,7 @@ tr.mat-header-row {
 }
 
 .mat-button-toggle-checked .mat-button-toggle-button {
-    background-color: darken($color: #13a193, $amount: 20) !important;
+    background-color: darken($color: #b0ba29, $amount: 20) !important;
     font-weight: bolder;
 }
 
