@@ -68,7 +68,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 }
 
 body.darkMode {
-    --second_bar_bg: #3e3e3e;
+    --second_bar_bg: #598aab;
     --home_body_bg: linear-gradient(0deg, #424242 0%, #191919 100%);
     --sidebar_bg: linear-gradient(321deg, #272727 0%, #5a5a5a 100%);
     --magic: "__dark";
@@ -150,9 +150,9 @@ body.darkMode {
     .formDesign {
         height: auto;
         background-color: #585858;
-        border: 0px solid #2e2e2e !important;
+        border: 1px solid #707070 !important;
         box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.2), 0px 1px 0px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important;
-        border-radius: 5px;
+        border-radius: 0px;
     }
 
     .mat-paginator-container {
@@ -591,4 +591,25 @@ body.darkMode {
 
 .mat-mini-fab .mat-button-wrapper {
     padding: 6px 0px !important;
+}
+
+.mat-toolbar-row,
+.mat-toolbar-single-row,
+.mat-toolbar-multiple-rows {
+    height: 47px;
+}
+
+.mat-toolbar-multiple-rows {
+    min-height: 47px;
+}
+body.darkMode {
+    .mat-toolbar-row,
+    .mat-toolbar-single-row,
+    .mat-toolbar-multiple-rows {
+        height: 47px;
+    }
+
+    .mat-toolbar-multiple-rows {
+        min-height: 47px;
+    }
 }
