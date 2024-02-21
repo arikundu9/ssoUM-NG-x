@@ -8,13 +8,13 @@
             <span class="example-spacer"></span>
             <input type="text" class="w-25 search_box" placeholder="Search" />
             <span class="example-spacer"></span>
-            <button mat-button mat-icon-button class="mx-1" color="" [matMenuTriggerFor]="userMenu">
+            <button mat-mini-fab class="mx-1" color="" [matMenuTriggerFor]="userMenu">
                 <mat-icon>face</mat-icon>
             </button>
             <mat-menu #userMenu="matMenu" class="p-3 text-dark">
                 <h1>Name</h1>
             </mat-menu>
-            <button mat-button mat-icon-button class="mx-1" color="" [matMenuTriggerFor]="settingsMenu">
+            <button mat-mini-fab class="mx-1" color="" [matMenuTriggerFor]="settingsMenu">
                 <mat-icon>settings</mat-icon>
             </button>
             <!-- <mat-slide-toggle class="px-5" (click)="toggleDarkMode()"></mat-slide-toggle> -->
@@ -23,7 +23,7 @@
                 <button mat-menu-item (click)="toggleDarkMode()">Toggle Theme (Ctrl+Shift+D)</button>
                 <button mat-menu-item (click)="openDialog('0ms', '0ms')">Master Configuartion</button>
             </mat-menu>
-            <button mat-button mat-icon-button color="warn" class="mx-1" (click)="logout()" matTooltip="Logout">
+            <button mat-mini-fab color="warn" class="mx-1" (click)="logout()" matTooltip="Logout">
                 <mat-icon>power_settings_new</mat-icon>
             </button>
         </mat-toolbar-row>

@@ -45,8 +45,10 @@ export class CommonService extends baseNetworkService {
             // Request Success
             switch (resp.respCode) {
                 case 2000:
-                    if (resp.message != null)
+                    if (resp.message != null) {
                         this.notifyIt.success(resp.message ?? 'Success');
+                        this.statusBar.text = resp.message ?? 'Success';
+                    }
                     break;
                 default:
                     break;

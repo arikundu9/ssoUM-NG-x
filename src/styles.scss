@@ -613,3 +613,26 @@ body.darkMode {
         min-height: 47px;
     }
 }
+
+.mat-list-base .mat-list-item .mat-list-item-content {
+    height: auto !important;
+    padding: 7px 10px !important;
+    margin: 15px 10px;
+    background: #ffffff15;
+    border: 1px solid #ffffff0c !important;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px 0px #000000b3;
+}
+
+.active .mat-list-item-content::before {
+    background-color: #ffffff59 !important;
+    content: "";
+    width: 5px;
+    height: 20px;
+    margin: 0px 3px;
+    border-radius: 5px;
+}
+
+.material-icons {
+    font-size: 21px !important;
+}
