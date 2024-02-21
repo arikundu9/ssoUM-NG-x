@@ -36,11 +36,11 @@
     <router-outlet (activate)="onLoadComponent($event)"></router-outlet>
 </mat-drawer-container>
 <mat-menu #afterMenu="matMenu" xPosition="after" class="px-2 text-dark"> INFO </mat-menu>
-<div class="d-flex justify-content-between align-items-center" ngClass="statusBar-{{ statusBar.colorMode }}">
+<div class="d-flex justify-content-between align-items-center text-nowarp" ngClass="statusBar-{{ statusBar.colorMode }}">
     <div>{{ statusBar.text }}</div>
-    <div>
-        <span [matMenuTriggerFor]="afterMenu">&nbsp;ABC&nbsp;&nbsp;|&nbsp;&nbsp;RL: ME&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <span class="">{{ timer | date : "📅&nbsp;dd MMM, yyyy 🕥&nbsp;hh:mm:ss a" }}</span>
+    <div class="text-nowrap">
+        <span [matMenuTriggerFor]="afterMenu" class="text-nowrap">&nbsp;ABC&nbsp;&nbsp;|&nbsp;&nbsp;RL: ME&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <span class="text-nowrap">{{ timer | date : "📅&nbsp;dd MMM, yyyy 🕥&nbsp;hh:mm:ss a" }}</span>
     </div>
 </div>
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
