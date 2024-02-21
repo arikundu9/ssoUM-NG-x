@@ -11,21 +11,25 @@
         </div>
     </div>
     <div class="row formDesign p-2 mt-3 mb-3">
-        <form>
+        <form [formGroup]="AppRegistrationForm">
             <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control form-control-sm" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                <label for="redirecturl">Redirectr URL</label>
+                <input type="email" formControlName="redirecturl" class="form-control form-control-sm" id="redirecturl" aria-describedby="redirecturlHelp" placeholder="https://example.com/login?token={token}" />
+                <small id="redirecturlHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
             <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password" />
+                <label for="jid">JID</label>
+                <input type="number" formControlName="jid" class="form-control form-control-sm" id="jid" placeholder="Password" />
+            </div>
+            <div class="form-group">
+                <label for="app_name">Application Name</label>
+                <input type="text" formControlName="appName" class="form-control form-control-sm" id="app_name" placeholder="Application name" />
             </div>
             <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1" />
                 <label class="form-check-label" for="exampleCheck1">Check me out</label>
             </div>
-            <button type="submit" color="primary" mat-raised-button class="btn btn-primary">Submit</button>
+            <button type="button" (click)="registerApp()" color="primary" mat-raised-button class="btn btn-primary">Submit</button>
         </form>
     </div>
 

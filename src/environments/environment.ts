@@ -4,6 +4,7 @@
 
 export const environment = {
     production: false,
+    backend: 'http://localhost:5678',
     version: 'v1',
     AesKey: '8097276631449410',
     AesIV: '7996209429192123',
