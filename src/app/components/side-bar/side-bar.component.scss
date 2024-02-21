@@ -18,9 +18,10 @@ li {
 .col {
     color: white;
 }
-ul ul {
+ul ul,
+.mat-list-item {
     padding: 7px 5px;
-    margin-top: 10px;
+    margin: 10px;
     background: #ffffff15;
     border: 1px solid #ffffff0c;
     border-radius: 5px;
@@ -33,11 +34,17 @@ ul li ul li:last-of-type::before{
     content: "└";
 } */
 .active {
-    border-left: 3px solid white;
-    text-shadow: 0px 0px 5px black;
-    padding-left: 5px;
+    /* border-left: 3px solid white; */
+    padding-left: 5px !important;
+    background-color: #00000038;
 }
 
-.reload-link {
+.mat-list-item {
+    // background-color: red;
+}
+
+.reload-link,
+.mat-list-base .mat-list-item,
+.mat-list-base .mat-list-option {
     cursor: pointer;
 }

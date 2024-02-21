@@ -19,13 +19,13 @@ export class AppsComponent implements OnInit {
 
     ngOnInit() {
         this.cS.get('/App').subscribe((resp: any) => {
-            console.log(resp);
+            // console.log(resp);
         });
     }
 
     registerApp() {
         this.cS.post(this.AppRegistrationForm.value, '/App').subscribe((resp: any) => {
-            console.log(resp);
+            // console.log(resp);
         });
     }
 }

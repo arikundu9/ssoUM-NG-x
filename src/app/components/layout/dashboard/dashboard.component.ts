@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     constructor(private router: Router, private auth: authService, public statusBar: statusBarService, public dialog: MatDialog, private observer: BreakpointObserver, private cdr: ChangeDetectorRef) {
         // this.user = auth.user;
         // this.parsedToken = this.auth.parsedJwt;
-        // localStorageService.set('sidebar_drawer', 'open');
+        localStorageService.set('sidebar_drawer', 'open');
     }
 
     ngOnInit(): void {
