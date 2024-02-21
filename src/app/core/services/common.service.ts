@@ -32,7 +32,11 @@ export class CommonService extends baseNetworkService {
         );
     }
 
-    handleResponseCode(resp: any) {
+    /**
+     * Handles response code
+     * @param resp
+     */
+    private handleResponseCode = (resp: any) => {
         if (resp.respCode >= 2000 && resp.respCode < 3000) {
             // Request Success
             switch (resp.respCode) {
