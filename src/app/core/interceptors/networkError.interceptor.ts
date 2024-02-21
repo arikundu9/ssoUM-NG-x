@@ -23,7 +23,7 @@ export class networkErrorInterceptor implements HttpInterceptor {
                                 this.notify.errorToast("404 Not Found.<br>" + error.message);
                                 break;
                             case 400:
-                                if (error.error.apiResponseStatus == 3) {
+                                if (error.error.respCode == 1000) {
                                     this.notify.cloasableAlert(error.error.message);
                                 }
                                 break;
