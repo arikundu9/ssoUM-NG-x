@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 /*---Component import section : start---*/
-import { LoginComponent } from '@L/login/login.component';
+import { LoginComponent } from '@C/login/login.component';
 import { DashboardComponent } from '@L/dashboard/dashboard.component';
-import { HomeComponent } from '@L/home/home.component';
-import { SideBarComponent } from '@L/side-bar/side-bar.component';
+import { HomeComponent } from '@C/home/home.component';
+import { SideBarComponent } from '@C/side-bar/side-bar.component';
 import { BaseComponent } from '@C/common/BasePage.component';
 import { AuthGuard } from '$/gurards/auth.guard';
 import { CommonDialogComponent } from '@C/common/common-dialog/common-dialog.component';
