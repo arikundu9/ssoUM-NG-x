@@ -35,4 +35,11 @@ const routes: Routes = [
 export class AppRoutingModule { }
 
 //------Components declare------
-export const appDeclaration = [LoginComponent, DashboardComponent, HomeComponent, SideBarComponent, BaseComponent, CommonDialogComponent];
+export const appDeclaration = [
+    LoginComponent,
+    DashboardComponent,
+    HomeComponent,
+    SideBarComponent,
+    BaseComponent,
+    CommonDialogComponent
+];
