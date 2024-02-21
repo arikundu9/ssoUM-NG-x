@@ -25,6 +25,7 @@
 .example-sidenav {
     min-width: min-content;
     background: var(--sidebar_bg);
+    border-right: 1px solid #00000057 !important;
 }
 
 %statusBarformat {

@@ -1,10 +1,12 @@
 .heading {
     background-color: var(--second_bar_bg);
     padding: 5px 20px;
+    border-bottom: 1px solid #00000057;
 }
 
 .txt {
     padding: 10px;
     font-size: 15px;
-    font-weight: 400;
+    font-weight: bolder;
+    color: #0000007d;
 }

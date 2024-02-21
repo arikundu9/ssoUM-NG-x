@@ -432,7 +432,7 @@ td.mat-footer-cell:first-of-type {
 .cdk-overlay-dark-backdrop {
     --bs-backdrop-opacity: 1;
     --bs-backdrop-bg: #00000058;
-    backdrop-filter: blur(4px) !important;
+    backdrop-filter: blur(1px) !important;
     background-color: var(--bs-backdrop-bg) !important;
     opacity: 1 !important;
 }
