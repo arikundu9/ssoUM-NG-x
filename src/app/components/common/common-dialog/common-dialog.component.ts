@@ -3,7 +3,7 @@ import { NotificationService } from '@S/notification.service';
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -14,19 +14,37 @@ import { ToastrService } from 'ngx-toastr';
 export class CommonDialogComponent implements OnInit {
     goNoData: any;
     goNoForm!: FormGroup;
+    newkeyForm: FormGroup = this.fb.group({
+        type: [, Validators.required],
+        public_key: [],
+        private_key: [, Validators.required],
+        algo: [, Validators.required],
+    });
     objectAutoAllotmentData: any;
-    constructor(@Inject(MAT_DIALOG_DATA) public commonDialogData: any, private cS: CommonService, private fb: FormBuilder, private dialogRef: MatDialogRef<CommonDialogComponent>, private notify: NotificationService, private toastr: ToastrService, private datePipe: DatePipe) { }
+    constructor(@Inject(MAT_DIALOG_DATA) public commonDialogData: any, /*@Inject(MAT_DIALOG_DEFAULT_OPTIONS) public defaultConfig: any,*/ private cS: CommonService, private fb: FormBuilder, private dialogRef: MatDialogRef<CommonDialogComponent>, private notify: NotificationService, private toastr: ToastrService, private datePipe: DatePipe) { }
+
+    maximize() {
+        this.dialogRef.updateSize('100vw', '100vh');
+    }
 
     ngOnInit(): void {
-        if (this.commonDialogData.mode == 'Master Configuaration') {
-            this.goNoForm = this.fb.group({
-                goNo: ['', Validators.required],
-                goNoDate: ['', Validators.required],
-            });
-        } else if (this.commonDialogData.mode == 'View Auto Allotment Objection') {
+        console.log(this.commonDialogData);
+        console.log(this.dialogRef);
 
+        switch (this.commonDialogData.mode) {
+            case 'Master Configuaration':
+                this.goNoForm = this.fb.group({
+                    goNo: ['', Validators.required],
+                    goNoDate: ['', Validators.required],
+                });
+                break;
+
+            default:
+                break;
         }
     }
 
-    overRuleObjection() { }
+    overRuleObjection() {
+
+    }
 }

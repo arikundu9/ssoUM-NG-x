@@ -10,6 +10,7 @@ import { BaseComponent } from '@C/common/BasePage.component';
 import { AuthGuard } from '$/gurards/auth.guard';
 import { CommonDialogComponent } from '@C/common/common-dialog/common-dialog.component';
 import { AppsComponent } from '@C/apps/apps.component';
+import { KeysComponent } from '@C/keys/keys.component';
 
 /*---Component import section : end---*/
 
@@ -26,6 +27,7 @@ const routes: Routes = [
         children: [
             { path: 'home', data: {}, component: HomeComponent },
             { path: 'apps', data: {}, component: AppsComponent },
+            { path: 'keys', data: {}, component: KeysComponent },
             // { path: 'home', canActivate: [AuthGuard], data: {}, component: HomeComponent },
         ],
     },
@@ -44,5 +46,6 @@ export const appDeclaration = [
     SideBarComponent,
     BaseComponent,
     CommonDialogComponent,
-    AppsComponent
+    AppsComponent,
+    KeysComponent
 ];

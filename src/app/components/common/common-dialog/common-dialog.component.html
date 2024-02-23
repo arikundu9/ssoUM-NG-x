@@ -1,33 +1,67 @@
-<div *ngIf="this.commonDialogData.mode === 'Master Configuaration'">
-    <form [formGroup]="goNoForm">
-        <div>
-            <mat-form-field appearance="outline" class="full-width">
-                <mat-label>FB GO No.</mat-label>
-                <input matInput type="text" formControlName="goNo" autocomplete="off" placeholder="FB GO No." />
-            </mat-form-field>
-            <mat-error><custom-mat-error [control]="goNoForm.controls.goNo"></custom-mat-error></mat-error>
-        </div>
-        <div>
-            <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Choose a date for corresponding GO NO.</mat-label>
-                <input formControlName="goNoDate" matInput [matDatepicker]="picker1" placeholder="Choose a date for corresponding GO NO.(/DD/MM/YYYY)" />
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
-            <mat-error><custom-mat-error [control]="goNoForm.controls.goNoDate"></custom-mat-error></mat-error>
-        </div>
-    </form>
-    <mat-action-row>
-        <button mat-raised-button color="primary">Save</button>
-    </mat-action-row>
+<div mat-dialog-title class="d-flex justify-content-between">
+    <div>
+        <h2>{{ commonDialogData.mode }}</h2>
+    </div>
+    <div>
+        <button type="button" mat-icon-button color="primary" (click)="maximize()">
+            <mat-icon>open_with</mat-icon>
+        </button>
+        <button type="button" mat-mini-fab mat-dialog-close color="warn">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
 </div>
+<div [ngSwitch]="commonDialogData.mode">
+    <!-- case : Master Configuaration-->
+    <div *ngSwitchCase="'Master Configuaration'">
+        <form [formGroup]="goNoForm">
+            <div>
+                <mat-form-field appearance="fill" class="full-width">
+                    <mat-label>FB GO No.</mat-label>
+                    <input matInput type="text" formControlName="goNo" autocomplete="off" placeholder="FB GO No." />
+                </mat-form-field>
+                <mat-error><custom-mat-error [control]="goNoForm.controls.goNo"></custom-mat-error></mat-error>
+            </div>
+            <div>
+                <mat-form-field appearance="fill" class="full-width">
+                    <mat-label>Choose a date for corresponding GO NO.</mat-label>
+                    <input formControlName="goNoDate" matInput [matDatepicker]="picker1" placeholder="Choose a date for corresponding GO NO.(/DD/MM/YYYY)" />
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+                <mat-error><custom-mat-error [control]="goNoForm.controls.goNoDate"></custom-mat-error></mat-error>
+            </div>
+        </form>
+        <mat-action-row>
+            <button mat-raised-button color="primary">Save</button>
+        </mat-action-row>
+    </div>
 
-<div *ngIf="this.commonDialogData.mode === 'View Auto Allotment Objection'">
-    <div class="object">Objection</div>
-    <ul style="margin-top: 15px">
-        <li *ngFor="let objectioItem of objectAutoAllotmentData">{{ objectioItem.comment }}</li>
-    </ul>
-    <mat-action-row>
-        <button mat-raised-button color="primary" (click)="overRuleObjection()">Over Rule</button>
-    </mat-action-row>
+    <!-- case : Add New Key-->
+    <div *ngSwitchCase="'Add New Key'">
+        <form [formGroup]="newkeyForm">
+            <div>
+                <mat-form-field appearance="fill">
+                    <mat-label>Type</mat-label>
+                    <mat-select formControlName="type">
+                        <mat-option [value]="'symmetric'">Symmetric</mat-option>
+                        <mat-option [value]="'asymmetric'">Asymmetric</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-error><custom-mat-error [control]="newkeyForm.controls.type"></custom-mat-error></mat-error>
+            </div>
+            <div>
+                <textarea name="" formControlName="public_key" id="" rows="5" class="w-100"></textarea>
+            </div>
+            <div>
+                <textarea name="" formControlName="private_key" id="" rows="5" class="w-100"></textarea>
+            </div>
+        </form>
+        <mat-action-row>
+            <button mat-raised-button color="primary">Save</button>
+        </mat-action-row>
+    </div>
+
+    <!--cade : default-->
+    <div *ngSwitchDefault></div>
 </div>

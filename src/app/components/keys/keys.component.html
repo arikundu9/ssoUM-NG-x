@@ -1,0 +1,35 @@
+<!--Header Bar : Start -->
+<div class="container-fluid">
+    <secondBar>Manage Cryptographic Keys</secondBar>
+</div>
+<!--Header Bar : End -->
+<div class="container">
+    <!-- Body : start -->
+    <div class="d-flex justify-content-end mt-3 mb-3" style="margin: 0px">
+        <button type="button" color="primary" mat-mini-fab (click)="add()"><mat-icon>add_circle</mat-icon></button>
+    </div>
+    <div class="row formDesign p-2 mt-3 mb-3">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Public Key</th>
+                    <th>Private Key</th>
+                    <th>Algorythm</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let key of keys">
+                    <td>{{ key.kid }}</td>
+                    <td>{{ key.type }}</td>
+                    <td>{{ key.publicKey }}</td>
+                    <td>{{ key.privateKey }}</td>
+                    <td>{{ key.algo }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Body : End -->
+</div>
