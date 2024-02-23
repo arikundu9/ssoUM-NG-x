@@ -44,21 +44,39 @@
                 <mat-form-field appearance="fill">
                     <mat-label>Type</mat-label>
                     <mat-select formControlName="type">
-                        <mat-option [value]="'symmetric'">Symmetric</mat-option>
-                        <mat-option [value]="'asymmetric'">Asymmetric</mat-option>
+                        <mat-option [value]="0">Symmetric</mat-option>
+                        <mat-option [value]="1">Asymmetric</mat-option>
                     </mat-select>
                 </mat-form-field>
                 <mat-error><custom-mat-error [control]="newkeyForm.controls.type"></custom-mat-error></mat-error>
             </div>
             <div>
-                <textarea name="" formControlName="public_key" id="" rows="5" class="w-100"></textarea>
+                <mat-form-field appearance="fill" class="full-width">
+                    <textarea matInput name="" formControlName="publicKey" rows="5"></textarea>
+                    <mat-label>Public Key</mat-label>
+                    <mat-error><custom-mat-error [control]="newkeyForm.controls.publicKey"></custom-mat-error></mat-error>
+                </mat-form-field>
             </div>
             <div>
-                <textarea name="" formControlName="private_key" id="" rows="5" class="w-100"></textarea>
+                <mat-form-field appearance="fill" class="full-width">
+                    <textarea matInput name="" formControlName="privateKey" rows="5"></textarea>
+                    <mat-label>Private Key</mat-label>
+                    <mat-error><custom-mat-error [control]="newkeyForm.controls.privateKey"></custom-mat-error></mat-error>
+                </mat-form-field>
+            </div><div>
+                <mat-form-field appearance="fill">
+                    <mat-label>Algorythm</mat-label>
+                    <mat-select formControlName="algo">
+                        <mat-option [value]="'rsa'">RSA</mat-option>
+                        <mat-option [value]="'des'">DES</mat-option>
+                        <mat-option [value]="'aes'">AES</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-error><custom-mat-error [control]="newkeyForm.controls.algo"></custom-mat-error></mat-error>
             </div>
         </form>
         <mat-action-row>
-            <button mat-raised-button color="primary">Save</button>
+            <button mat-raised-button color="primary" (click)="saveKey()">Save</button>
         </mat-action-row>
     </div>
 

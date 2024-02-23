@@ -16,8 +16,8 @@ export class CommonDialogComponent implements OnInit {
     goNoForm!: FormGroup;
     newkeyForm: FormGroup = this.fb.group({
         type: [, Validators.required],
-        public_key: [],
-        private_key: [, Validators.required],
+        publicKey: [],
+        privateKey: [, Validators.required],
         algo: [, Validators.required],
     });
     objectAutoAllotmentData: any;
@@ -42,6 +42,12 @@ export class CommonDialogComponent implements OnInit {
             default:
                 break;
         }
+    }
+
+    saveKey(){
+        this.cS.post(this.newkeyForm.value, '/Key').subscribe((resp: any) => {
+            // console.log(resp);
+        });
     }
 
     overRuleObjection() {
