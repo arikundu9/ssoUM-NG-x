@@ -6,9 +6,56 @@
 <div class="container">
     <!-- Body : start -->
     <div class="d-flex justify-content-end mt-3 mb-3" style="margin: 0px">
-        <button type="button" color="primary" mat-mini-fab (click)="add()"><mat-icon>add_circle</mat-icon></button>
+        <button type="button" color="primary" mat-mini-fab (click)="entryForm = !entryForm">
+            <mat-icon *ngIf="!entryForm">add_circle</mat-icon>
+            <mat-icon *ngIf="entryForm">close</mat-icon>
+        </button>
     </div>
-    <div class="row formDesign p-2 mt-3 mb-3">
+
+    <!--add form-->
+    <div *ngIf="entryForm">
+        <form [formGroup]="newkeyForm">
+            <div>
+                <mat-form-field appearance="fill">
+                    <mat-label>Type</mat-label>
+                    <mat-select formControlName="type">
+                        <mat-option [value]="0">Symmetric</mat-option>
+                        <mat-option [value]="1">Asymmetric</mat-option>
+                    </mat-select>
+                    <mat-error><span *ngIf="newkeyForm.controls.type.errors?.required">Type is required</span></mat-error>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="fill" class="full-width">
+                    <textarea matInput name="" formControlName="publicKey" rows="5"></textarea>
+                    <mat-label>Public Key</mat-label>
+                    <mat-error><span *ngIf="newkeyForm.controls.publicKey.errors?.required">Public Key is required</span></mat-error>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="fill" class="full-width">
+                    <textarea matInput name="" formControlName="privateKey" rows="5"></textarea>
+                    <mat-label>Private Key</mat-label>
+                    <mat-error><span *ngIf="newkeyForm.controls.privateKey.errors?.required">Private Key is required</span></mat-error>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="fill">
+                    <mat-label>Algorythm</mat-label>
+                    <mat-select formControlName="algo">
+                        <mat-option [value]="'rsa'">RSA</mat-option>
+                        <mat-option [value]="'des'">DES</mat-option>
+                        <mat-option [value]="'aes'">AES</mat-option>
+                    </mat-select>
+                    <mat-error><span *ngIf="newkeyForm.controls.algo.errors?.required">Algorythm Key is required</span></mat-error>
+                </mat-form-field>
+            </div>
+        </form>
+        <button type="button" mat-raised-button color="primary" (click)="saveKey()">Save</button>
+    </div>
+
+    <!--table-->
+    <div class="row formDesign p-2 mt-3 mb-3" *ngIf="!entryForm">
         <table class="table table-bordered">
             <thead>
                 <tr>
