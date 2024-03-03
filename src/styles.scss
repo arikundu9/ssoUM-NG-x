@@ -44,7 +44,7 @@ body {
     --prime_aqua: #b0ba29;
     --white: #ffffff;
     --second_bar_bg: #fdd29b;
-    --home_body_bg: #dedede;
+    --home_body_bg: linear-gradient(90deg, #c7d8e3 0%, #dfd6cb 100%);
     --sidebar_bg: linear-gradient(321deg, #0d5d93 0%, #1f9df1 100%);
     --magic: "";
     scrollbar-width: thin !important; /* Sets the width of the entire scrollbar */
