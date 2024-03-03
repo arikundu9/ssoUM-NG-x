@@ -11,6 +11,7 @@ import { AuthGuard } from '$/gurards/auth.guard';
 import { CommonDialogComponent } from '@C/common/common-dialog/common-dialog.component';
 import { AppsComponent } from '@C/apps/apps.component';
 import { KeysComponent } from '@C/keys/keys.component';
+import { JwtsComponent } from '@C/jwts/jwts.component';
 
 /*---Component import section : end---*/
 
@@ -28,6 +29,7 @@ const routes: Routes = [
             { path: 'home', data: {}, component: HomeComponent },
             { path: 'apps', data: {}, component: AppsComponent },
             { path: 'keys', data: {}, component: KeysComponent },
+            { path: 'jwts', data: {}, component: JwtsComponent },
             // { path: 'home', canActivate: [AuthGuard], data: {}, component: HomeComponent },
         ],
     },
@@ -47,5 +49,6 @@ export const appDeclaration = [
     BaseComponent,
     CommonDialogComponent,
     AppsComponent,
-    KeysComponent
+    KeysComponent,
+    JwtsComponent
 ];
