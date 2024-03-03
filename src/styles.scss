@@ -641,3 +641,7 @@ body.darkMode {
 .material-icons {
     font-size: 21px !important;
 }
+body.darkMode .mat-toolbar.mat-primary,
+.mat-toolbar.mat-primary {
+    color: #f78117;
+}
