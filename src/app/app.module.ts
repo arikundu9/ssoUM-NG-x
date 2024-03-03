@@ -49,7 +49,7 @@ import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
-    declarations: [AppComponent, appDeclaration, SecondBarComponent, CustomMatErrorComponent, ],
+    declarations: [AppComponent, appDeclaration, SecondBarComponent, CustomMatErrorComponent,],
     imports: [
         BrowserModule,
         AppRoutingModule,
@@ -68,7 +68,7 @@ import { ToastrModule } from 'ngx-toastr';
         MatInputModule,
         MatRadioModule,
         ReactiveFormsModule,
-        FormsModule ,
+        FormsModule,
         MatMenuModule,
         HttpClientModule,
         MatAutocompleteModule,
@@ -102,4 +102,4 @@ import { ToastrModule } from 'ngx-toastr';
     ],
     bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
