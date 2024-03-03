@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
+import * as Crypto from 'crypto';
 import { environment } from '@E/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class CryptoService {
-    constructor() {}
+    constructor() { }
 
     // *****The set method is use for encrypt the value*****.
     set(keys: string, value: any): any {
@@ -61,4 +62,17 @@ export class CryptoService {
         }).toString();
         return decryptedMessage;
     }
+
+    // encrypt(val: string) {
+    //     let cipher = Crypto.createCipheriv('aes-256-cbc', environment.AesKey, environment.AesIV);
+    //     let encrypted = cipher.update(val, 'utf8', 'base64');
+    //     encrypted += cipher.final('base64');
+    //     return encrypted;
+    // }
+
+    // decrypt(encrypted: string) {
+    //     let decipher = Crypto.createDecipheriv('aes-256-cbc', environment.AesKey, environment.AesIV);
+    //     let decrypted = decipher.update(encrypted, 'base64', 'utf8');
+    //     return (decrypted + decipher.final('utf8'));
+    // }
 }
