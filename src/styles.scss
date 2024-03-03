@@ -648,3 +648,12 @@ body.darkMode .mat-toolbar.mat-primary,
 .mat-list-base .mat-subheader {
     color: #ff9e34;
 }
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: #407c1b1f;
+    border: 1px dashed #3a8b089c;
+    border-radius: 7px 7px 0 0 !important;
+}
+.mat-form-field {
+    font-weight: 500;
+}
