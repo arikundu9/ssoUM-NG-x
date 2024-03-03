@@ -43,8 +43,8 @@ body {
     --prime_blue: #1368a1;
     --prime_aqua: #b0ba29;
     --white: #ffffff;
-    --second_bar_bg: #fdd29b;
-    --home_body_bg: #dedede;
+    --second_bar_bg: #9bd6fd;
+    --home_body_bg: linear-gradient(270deg, #c7d8e3 0%, #dfd6cb 100%);
     --sidebar_bg: linear-gradient(321deg, #0d5d93 0%, #1f9df1 100%);
     --magic: "";
     scrollbar-width: thin !important; /* Sets the width of the entire scrollbar */
@@ -68,7 +68,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 }
 
 body.darkMode {
-    --second_bar_bg: #fdd29b9e;
+    --second_bar_bg: #598aab;
     --home_body_bg: linear-gradient(0deg, #424242 0%, #191919 100%);
     --sidebar_bg: linear-gradient(321deg, #272727 0%, #5a5a5a 100%);
     --magic: "__dark";
