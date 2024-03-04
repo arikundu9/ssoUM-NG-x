@@ -39,7 +39,7 @@ $light-disabled-text: rgba(white, 0.5);
 $light-dividers: rgba(white, 0.12);
 $light-focused: rgba(white, 0.12);
 
-$eB_primary_palette: (
+$var_primary_palette: (
     50: #e4f2f8,
     100: #bcdeef,
     200: #93cae5,
@@ -72,7 +72,7 @@ $eB_primary_palette: (
     ),
 );
 
-$eB_accent_palette: (
+$var_accent_palette: (
     50: #dff1f0,
     100: #afddd8,
     200: #7bc8bf,
@@ -105,32 +105,32 @@ $eB_accent_palette: (
     ),
 );
 
-$eB_primary: mat.define-palette($eB_primary_palette, 800);
-$eB_accent: mat.define-palette($eB_accent_palette, 400);
+$var_primary: mat.define-palette($var_primary_palette, 800);
+$var_accent: mat.define-palette($var_accent_palette, 400);
 
 // The "warn" palette is optional and defaults to red if not specified.
-$eB_warn: mat.define-palette(mat.$red-palette);
+$var_warn: mat.define-palette(mat.$red-palette);
 
-$eB_theme: mat.define-light-theme(
+$var_theme: mat.define-light-theme(
     (
         color: (
-            primary: $eB_primary,
-            accent: $eB_accent,
-            warn: $eB_warn,
+            primary: $var_primary,
+            accent: $var_accent,
+            warn: $var_warn,
         ),
     )
 );
-$eB_darkTheme: mat.define-dark-theme(
+$var_darkTheme: mat.define-dark-theme(
     (
         color: (
-            primary: mat.define-palette($eB_primary_palette, 900),
-            accent: mat.define-palette($eB_accent_palette, 500),
-            warn: $eB_warn,
+            primary: mat.define-palette($var_primary_palette, 900),
+            accent: mat.define-palette($var_accent_palette, 500),
+            warn: $var_warn,
         ),
     )
 );
-@include mat.all-component-themes($eB_theme);
+@include mat.all-component-themes($var_theme);
 
 body.darkMode {
-    @include mat.all-component-themes($eB_darkTheme);
+    @include mat.all-component-themes($var_darkTheme);
 }
