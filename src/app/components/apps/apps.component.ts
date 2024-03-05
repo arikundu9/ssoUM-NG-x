@@ -1,3 +1,4 @@
+import './../../core/extentions/FormBuilder.extention';
 import { CommonService } from '@S/index';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -9,7 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class AppsComponent implements OnInit {
 
-    AppRegistrationForm: FormGroup = this.fb.group({
+    AppRegistrationForm: FormGroup = this.fb.PowerForm({
         'redirecturl': ['', Validators.required],
         'jid': [0, Validators.required],
         'appName': ['', Validators.required]
